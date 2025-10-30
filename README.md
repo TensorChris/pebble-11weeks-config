@@ -28,9 +28,14 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.pbw](releases/11weeks-watchface-v2.1.pbw)**
+**📦 [Download 11weeks-watchface-v2.1.1.pbw](releases/11weeks-watchface-v2.1.1.pbw)** (Latest)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
+
+### Screenshots
+
+![Phone Battery View](screenshots/phone-battery.png)
+![Pebble Charging](screenshots/pebble-charging.png)
 
 ### Install
 
@@ -99,7 +104,13 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1** (Current)
+**v2.1.1** (Current)
+- Added complete original description from programus@gmail.com
+- Included watchface screenshots in Pebble app
+- Proper credits in app description
+- All features from v2.1 maintained
+
+**v2.1**
 - Settings now persist correctly when reopening configuration
 - Live canvas-based watchface preview enabled
 - Multi-language support maintained
