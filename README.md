@@ -1,82 +1,117 @@
-# Pebble 11 Weeks Watchface - Konfigurationsseite
+# Pebble 11 Weeks Watchface - Configuration Page
 
-Diese standalone Version der Konfigurationsseite für das "11 Weeks" Pebble Watchface kann selbst gehostet werden.
+A self-hosted configuration page for the "11 Weeks" Pebble watchface with live preview functionality.
 
-## 📁 Inhalt
+## 🎯 About This Project
 
-- `config.html` - Standalone Konfigurationsseite (alle Ressourcen eingebettet)
+This is a repackaged version of the excellent **11 Weeks Watchface** originally created by **[programus@gmail.com](https://github.com/programus/pebble-watchface-11weeks)**.
 
-## 🚀 Verwendung
+The original configuration page is no longer accessible at `http://programus.coding.me/pebble-watchface-11weeks/html/config.html`, making it impossible to customize the watchface settings. This repository provides a working alternative hosted on GitHub Pages.
 
-### Option 1: Lokales Hosten mit Python
+**Full credit goes to the original author** for creating this beautiful watchface. This project only re-hosts the configuration interface.
 
-Der einfachste Weg zum Testen:
+## 📦 What's Included
 
-```bash
-# Im Ordner pebble-11weeks-config:
-cd "/Users/chris/Library/CloudStorage/OneDrive-TensorFiveGmbH/Apps/pebble-11weeks-config"
+- `config.html` - Configuration page with embedded JavaScript
+- `js/` - Watch preview rendering libraries
+- `resources/images/` - Watchface graphics for live preview
+- `.pbw` file - Repackaged watchface pointing to the new config URL
 
-# Python 3 HTTP Server starten:
-python3 -m http.server 8000
+## 🚀 Live Configuration Page
+
+The configuration page is hosted at:
+```
+https://tensorchris.github.io/pebble-11weeks-config/config.html
 ```
 
-Dann kannst du die Seite im Browser öffnen: `http://localhost:8000/config.html`
+## 💾 Installation
 
-### Option 2: Auf einem Webserver hosten
+1. Download the latest `.pbw` file from the releases
+2. Install it on your Pebble watch via the Pebble app
+3. Open the watchface settings in the Pebble app
+4. Configure your preferred options with live preview!
 
-1. Lade die `config.html` auf deinen Webserver hoch
-2. Stelle sicher, dass die Datei über HTTPS erreichbar ist
-3. Notiere dir die URL (z.B. `https://deine-domain.de/pebble/config.html`)
+## ⚙️ Configuration Options
 
-### Option 3: GitHub Pages (kostenlos)
+The page offers the following customizable settings:
 
-1. Erstelle ein neues GitHub Repository
-2. Lade `config.html` hoch
-3. Aktiviere GitHub Pages in den Repository-Einstellungen
-4. Die URL wird etwa so aussehen: `https://username.github.io/repo-name/config.html`
+- **Seconds**: Display seconds (increases battery usage)
+- **Outline Frame**: Animated frame border (increases battery usage)
+- **Pebble Battery**: Show watch battery level
+- **Phone Battery & Bluetooth**: Show phone battery and Bluetooth status
 
-### Option 4: OneDrive/Dropbox Direct Link
+**Note:** Disabling the outline frame and seconds reduces battery consumption as the watchface will update once per minute instead of once per second.
 
-Da die Datei bereits in deinem OneDrive liegt:
-1. Erstelle einen öffentlichen Link für die `config.html`
-2. Verwende einen OneDrive Direct Link Generator (z.B. https://syncwithtec.blogspot.com/p/direct-download-link-generator.html)
+## ✨ Features
 
-## 🔧 In der Pebble App verwenden
+- ✅ **Live Preview**: See your changes in real-time with a canvas-based watchface preview
+- ✅ **Persistent Settings**: Your configuration is saved and loads correctly each time
+- ✅ **Multi-language Support**: Auto-detects your browser language
+  - English (en)
+  - Simplified Chinese (zh-Hans)
+  - Traditional Chinese (zh-Hant)
+  - Japanese (ja)
 
-1. Öffne die Pebble App auf deinem Smartphone
-2. Gehe zu den Einstellungen deines "11 Weeks" Watchfaces
-3. Wenn nach einer Config URL gefragt wird, gib deine gehostete URL ein
-4. Alternativ: Falls das Watchface die alte URL hartcodiert hat, musst du eventuell das Watchface neu kompilieren mit der neuen URL
+## 🔧 For Developers
 
-## ⚙️ Konfigurationsoptionen
+### Local Testing
 
-Die Seite bietet folgende Einstellungen:
+```bash
+# Start a local HTTP server
+cd pebble-11weeks-config
+python3 -m http.server 8000
 
-- **Seconds (Sekunden)**: Zeigt Sekunden an (mehr Batterieverbrauch)
-- **Outline Frame (Rahmen)**: Zeigt animierten Rahmen (mehr Batterieverbrauch)
-- **Pebble Battery (Pebble Batterie)**: Zeigt Batteriestatus der Uhr
-- **Phone Battery & Bluetooth**: Zeigt Handy-Batterie und Bluetooth-Status
+# Open in browser
+open http://localhost:8000/config.html
+```
 
-## 📝 Hinweise
+### Hosting Your Own
 
-- Die Preview-Funktion ist in dieser standalone Version deaktiviert, da sie externe Bild-Ressourcen benötigt
-- Die Einstellungen werden korrekt gespeichert und an die Pebble-Uhr übertragen
-- Die Einstellungen werden im localStorage deines Browsers gespeichert
+#### Option 1: GitHub Pages (Free)
 
-## 🌐 Mehrsprachigkeit
+1. Fork this repository
+2. Enable GitHub Pages in Settings → Pages
+3. Use the URL: `https://YOUR-USERNAME.github.io/pebble-11weeks-config/config.html`
 
-Die Konfigurationsseite unterstützt:
-- Englisch (en)
-- Vereinfachtes Chinesisch (zh-Hans)
-- Traditionelles Chinesisch (zh-Hant)
-- Japanisch (ja)
+#### Option 2: Any Web Server
 
-Die Sprache wird automatisch basierend auf deiner Browser-Einstellung ausgewählt.
+1. Upload all files to your web server
+2. Ensure the page is accessible via HTTPS
+3. Update the watchface `.pbw` to point to your URL
 
-## 🔗 Original Projekt
+### Modifying the Watchface
 
-Das Original-Projekt findest du hier: https://github.com/programus/pebble-watchface-11weeks
+To point the watchface to your own configuration URL:
 
-Die originale (nicht mehr verfügbare) Config URL war:
-`http://programus.coding.me/pebble-watchface-11weeks/html/config.html`
+1. Clone the [original repository](https://github.com/programus/pebble-watchface-11weeks)
+2. Edit `src/js/pebble-js-app.js` and change the URL in the `showConfiguration` event
+3. Repackage the `.pbw` file (or use the method described in `GITHUB_PAGES_SETUP.md`)
 
+## 📜 Version History
+
+**v2.1** (Current)
+- Settings now persist correctly when reopening configuration
+- Live canvas-based watchface preview enabled
+- Multi-language support maintained
+- Configuration page hosted on GitHub Pages
+
+**v2.0** (Original)
+- Created by programus@gmail.com
+- Original hosting no longer available
+
+## 🙏 Credits
+
+- **Original Watchface & Config Page**: [programus@gmail.com](https://github.com/programus/pebble-watchface-11weeks)
+- **Repackaging & GitHub Pages Hosting**: TensorChris
+
+This project exists solely to keep this wonderful watchface usable. All credit for the design and original implementation goes to the original author.
+
+## 📄 License
+
+This project respects the license of the original 11 Weeks Watchface project. Please refer to the [original repository](https://github.com/programus/pebble-watchface-11weeks) for license information.
+
+## 🔗 Links
+
+- **Original Project**: https://github.com/programus/pebble-watchface-11weeks
+- **This Config Page**: https://tensorchris.github.io/pebble-11weeks-config/config.html
+- **Original Config URL** (no longer available): `http://programus.coding.me/pebble-watchface-11weeks/html/config.html`
