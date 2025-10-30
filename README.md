@@ -79,3 +79,4 @@ Das Original-Projekt findest du hier: https://github.com/programus/pebble-watchf
 
 Die originale (nicht mehr verfügbare) Config URL war:
 `http://programus.coding.me/pebble-watchface-11weeks/html/config.html`
+
