@@ -28,15 +28,19 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.8-personal.pbw](releases/11weeks-watchface-v2.1.8-personal.pbw)** (Latest - v2.1.8 - WORKING! ✅)
+**📦 [Download 11weeks-watchface-v2.2.pbw](releases/11weeks-watchface-v2.2.pbw)** (Latest - v2.2 - RECOMPILED! ✅)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**⚠️ IMPORTANT:** This version uses the **original UUID** (`5d124af2-30f2-44b2-a32d-b459a159b489`) for full compatibility. Settings work perfectly! However, this means:
-- ✅ **FOR PERSONAL USE**: Settings and config page work flawlessly
-- ❌ **NOT FOR REBBLE STORE**: Cannot be submitted due to UUID conflict with original
+**✅ FULLY FUNCTIONAL VERSION - Recompiled from source with new UUID!**
 
-**Note:** Includes updated companyName (TensorChris) and description with proper credits. Works on Aplite and Basalt platforms (Pebble, Pebble Steel, Pebble Time series). Pebble 2 works via Aplite compatibility.
+This version was recompiled using Pebble SDK with the new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`), ensuring:
+- ✅ **Settings work perfectly!** No more timeout errors
+- ✅ **Ready for Rebble Store** - No UUID conflicts
+- ✅ **Full Pebble 2 support** - Proper Diorite binaries included
+- ✅ **All platforms**: Pebble, Pebble Steel, Pebble Time series, Pebble 2
+
+**Note:** Recompiled from source code with companyName (TensorChris), proper description with credits, and config page URL updated.
 
 ### Screenshots
 
@@ -110,13 +114,21 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1.8-personal** (Current - WORKING! ✅)
-- **Settings work perfectly!** This is the fully functional version
-- Uses **original UUID** for compatibility (not for Rebble Store)
-- Updated companyName: TensorChris
-- Added description with proper credits
+**v2.2** (Current - RECOMPILED! ✅)
+- **Recompiled from source** using Pebble SDK with new UUID
+- **Settings work perfectly!** Phone and watch communicate correctly
+- New UUID: `8ae4dd92-b5fa-42fa-aca9-d326dfad417f`
+- Ready for Rebble Store submission
+- Full Pebble 2 (Diorite) support with proper binaries
+- CompanyName: TensorChris
+- LongName: 11 Weeks Calendar
 - Config page: https://tensorchris.github.io/pebble-11weeks-config/config.html
-- Recommended for personal sideloading only
+- Recommended for both personal use and Rebble Store
+
+**v2.1.8-personal**
+- Working version but uses original UUID
+- Not suitable for Rebble Store
+- For personal sideloading only
 
 **v2.1.7**
 - Attempted to use new UUID with old binaries
