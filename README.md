@@ -28,11 +28,11 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.2.pbw](releases/11weeks-watchface-v2.1.2.pbw)** (Latest - v2.1.2)
+**📦 [Download 11weeks-watchface-v2.1.4.pbw](releases/11weeks-watchface-v2.1.4.pbw)** (Latest - v2.1.4 - Full Pebble 2 Support!)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**Note:** v2.1.2 uses a new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. This is the recommended version for both sideloading and Rebble submissions.
+**Note:** v2.1.4 includes proper Diorite (Pebble 2) binaries for full compatibility. Uses new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. Works on all Pebble models including Pebble 2.
 
 ### Screenshots
 
@@ -106,11 +106,19 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1.2** (Current)
-- New UUID to avoid conflicts with original watchface in Rebble App Store
-- Added Diorite platform support (Pebble 2)
-- All features from v2.1.1 maintained
-- Recommended for both sideloading and Rebble submissions
+**v2.1.4** (Current)
+- **Added proper Pebble 2 (Diorite) support** with complete platform binaries
+- Fixes Rebble App Store compatibility issue where Pebble 2 was shown as unsupported
+- All Pebble models now fully supported: Pebble, Pebble Steel, Pebble Time series, Pebble 2
+- Recommended for both sideloading and Rebble Store submissions
+
+**v2.1.3**
+- Fixed sideloading error from v2.1.2
+- Removed Diorite target but broke Rebble Store compatibility for Pebble 2
+- Not recommended - use v2.1.4 instead
+
+**v2.1.2** (Broken - Do Not Use)
+- Had sideloading error due to missing Diorite binaries
 
 **v2.1.1**
 - Added complete original description from programus@gmail.com
