@@ -324,11 +324,24 @@
   });
 
   (function() {
-    // Load any previously saved configuration, if available
-    for (var key in keys) {
-      var ctrl = document.getElementById(key);
-      var value = localStorage[key];
-      ctrl.checked = value ? false : true;
+    // Load configuration from URL parameter or localStorage
+    var configFromUrl = getQueryParam('config', null);
+
+    if (configFromUrl !== null && configFromUrl !== false) {
+      // Config passed from Pebble app
+      var configValue = parseInt(configFromUrl);
+      for (var key in keys) {
+        var ctrl = document.getElementById(key);
+        // If bit is set in config, option is DISABLED
+        ctrl.checked = !(configValue & keys[key]);
+      }
+    } else {
+      // Fallback to localStorage
+      for (var key in keys) {
+        var ctrl = document.getElementById(key);
+        var value = localStorage[key];
+        ctrl.checked = value ? false : true;
+      }
     }
     setUILanguage(navigator.language || navigator.userLanguage);
   })();
