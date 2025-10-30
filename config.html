@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>11 Weeks Configuration</title>
+  <meta charset='UTF-8' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  @font-face{font-family:'PFDinDisplayProLightWebfont';src:url("data:font/woff;base64,") format("woff");font-weight:normal;font-style:normal;font-variant:normal}@font-face{font-family:'PTSansRegularWebfont';src:url("data:font/woff;base64,") format("woff");font-weight:normal;font-style:normal;font-variant:normal}*{margin:0;padding:0}*:focus{outline-width:0}a{color:#ff4700;text-decoration:none}body{background-color:#eaeaea;margin-bottom:15px;font-size:1.2em;line-height:1.4em;-webkit-user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;user-select:none !important}body,select,input[type=text],input[type=time],input[type=date]{font-family:'PFDinDisplayPro-Light',PFDinDisplayProLightWebfont,sans-serif;font-weight:normal}select,input[type=time],input[type=date]{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;border:0;position:absolute;top:13px;color:#a8a8a8;font-size:1em;line-height:1em;background-color:#f7f7f7}input[type=date]{direction:rtl}select{right:30px;top:14px}input[type=time]{right:10px !important}input[type=date]{right:10px !important}.select-triangle{position:absolute;right:10px;top:20px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #ff4700}.item-container{color:#333;margin-top:15px}.item-container-header{padding:3px 10px;text-transform:uppercase;font-family:'PT Sans',PTSansRegularWebfont,sans-serif;font-size:.8em;font-weight:normal;color:#a8a8a8}.item-container-content{background-color:#f7f7f7;border-top:1px solid #dedede;border-bottom:1px solid #dedede}.item-container-footer{padding:3px 10px;font-size:.7em;line-height:1.4em;color:#a8a8a8}.item{position:relative;padding:10px;display:block;overflow:hidden}.item:not(:first-child){border-top:1px solid #dedede}.item-subtitle-wrapper{font-size:1em}.item-subtitle-wrapper .item-styled-toggle-wrapper{top:16px}.item-subtitle-wrapper .item-styled-checkbox{top:18px}.item-subtitle-wrapper .item-styled-radio{top:16px}.item-subtitle-wrapper .item-draggable-handle{top:18px}.item-subtitle{font-size:.7em;line-height:.7em;padding:.3em 0}.item-styled-toggle-wrapper{position:absolute;right:10px;top:8px;width:56px;height:30px;border-radius:5px;transition-timing-function:ease-in-out;transition-duration:.3s;transition-property:background-color}.item-styled-toggle{position:relative;background-color:#fff;width:28px;height:28px;border-radius:5px;top:1px;transition-timing-function:ease-in-out;transition-duration:.3s;transition-property:left}.item-toggle{display:none}.item-toggle+.item-styled-toggle-wrapper{background-color:#a8a8a8}.item-toggle:checked+.item-styled-toggle-wrapper{background-color:#ff4700}.item-toggle+.item-styled-toggle-wrapper .item-styled-toggle{left:1px}.item-toggle:checked+.item-styled-toggle-wrapper .item-styled-toggle{left:27px}.item-styled-toggle-bar{width:3px;height:15px;margin-left:3px;background-color:#eaeaea;float:left;position:relative;left:4px;top:7px}.item-styled-checkbox{position:absolute;right:10px;top:10px;width:21px;height:21px;border-radius:5px;border-width:2px;border-style:solid}.item-checkbox{display:none}.item-checkbox+.item-styled-checkbox{border-color:#dedede}.item-checkbox:checked+.item-styled-checkbox{border-color:#ff4700;background-color:#ff4700}.item-checkbox:checked+.item-styled-checkbox:before{content:"";display:block;position:relative;left:7px;width:6px;height:14px;border-color:#f7f7f7;border-width:0 2px 2px 0;border-style:solid;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg)}.item-styled-radio{position:absolute;right:10px;top:10px;width:21px;height:21px;border-radius:12px;border-width:2px;border-style:solid}.item-radio{display:none}.item-radio+.item-styled-radio{border-color:#dedede}.item-radio:checked+.item-styled-radio{border-color:#ff4700;background-color:#ff4700}.item-radio:checked+.item-styled-radio:before{content:"";display:block;position:relative;top:1px;left:6px;width:6px;height:14px;border-color:#f7f7f7;border-width:0 2px 2px 0;border-style:solid;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg)}.item-color{display:none}.item-styled-color{background:#f7f7f7}.item-styled-color .value{position:absolute;right:10px;top:10px;width:56px;height:30px;border-radius:5px;border-color:#a8a8a8;border-width:1px;border-style:solid}.item-styled-color .color-box-wrap{display:none;box-sizing:border-box;position:relative;height:0;width:100%;padding:0 0 100% 0;margin:.6em 0 0}.item-styled-color .color-box-wrap.show{display:block}.item-styled-color .color-box-wrap .color-box-container{position:absolute;height:99.97%;width:100%;left:0;top:0}.item-styled-color .color-box-wrap .color-box-container .color-box{float:left;cursor:pointer}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-tl{border-top-left-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-tr{border-top-right-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-bl{border-bottom-left-radius:5px}.item-styled-color .color-box-wrap .color-box-container .color-box.rounded-br{border-bottom-right-radius:5px}.item-date,.item-time{position:absolute;color:#f7f7f7 !important}.item-styled-date,.item-styled-time{position:absolute;top:13px;right:10px;color:#a8a8a8;font-size:1em;line-height:1em;background-color:#f7f7f7}.item-input-wrapper{border-radius:5px;border:2px solid #dedede}.item-input-wrapper-button{box-sizing:border-box;width:77%}.item-input{border:0;background-color:transparent;padding:0 10px 7px 10px;font-size:13px;width:100%;box-sizing:border-box}.button-container{text-align:center}.item-button{width:60%;height:35px;background-color:#ff4700;border-radius:5px;color:white;font-size:.8em;border:0;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none}.item-input-button{position:absolute;right:10px;top:9px;width:20%}.tab-buttons{display:table;width:100%;box-sizing:border-box;table-layout:fixed}.tab-button{display:table-cell;position:relative;color:#ff4700;border:1px solid #ff4700;border-right-width:0;font-size:14px;padding:5px 0;text-align:center;right:-1px}.tab-button:first-child{border-top-left-radius:5px;border-bottom-left-radius:5px;border-right-width:0}.tab-button:last-child{border-top-right-radius:5px;border-bottom-right-radius:5px;border-right-width:1px}.tab-button.active{background-color:#ff4700;color:#f7f7f7}.item-slider{position:relative;top:8px;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;height:30px;width:79%;overflow:hidden;background-color:transparent;margin-top:-10px}.item-slider::-webkit-slider-thumb:before{content:"";position:absolute;top:11px;left:-1001px;height:2px;width:1000px;background:#ff4700}.item-slider::-webkit-slider-thumb{-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;position:relative;top:-13px;height:28px;width:28px;background-color:#fff;border-radius:5px;border:2px solid #eaeaea}.item-slider::-webkit-slider-runnable-track{height:2px;background-color:#dedede}.item-slider::-webkit-slider-thumb:after{content:"lll";position:absolute;left:4px;top:3px;height:12px;width:10px;font-weight:normal;text-align:center;color:#dedede;font-size:16px;letter-spacing:1px}.item-slider-text{position:absolute;top:6px;right:10px;width:16%}.item-slider-text .item-input{text-align:center}.delete-item{width:30px;height:30px;right:5px;top:5px;position:absolute;border-radius:6px}.delete-item:before,.delete-item:after{content:'';position:absolute;width:24px;height:2px;background-color:#a8a8a8;border-radius:2px;top:16px}.delete-item:before{-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg);left:3px}.delete-item:after{-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg);-ms-transform:rotate(-45deg);-o-transform:rotate(-45deg);transform:rotate(-45deg);right:3px}.add-item{color:#ff4700}.item-draggable-handle{position:absolute;right:5px;top:10px;height:28px;width:28px}.item-draggable-handle-bar{margin-top:5px;height:2px;width:20px;background-color:#a8a8a8;text-align:center}[draggable=true]{background-color:#f7f7f7;border:2px solid #eaeaea;border-radius:2px}
+
+  ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 1em;
+    text-indent: -0.5em;
+  }
+
+  ul li:before {
+    content: "*";
+    display: inline-block;
+    text-align: center;
+    width: 0.5em;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .title {
+    padding: 15px 10px;
+    text-transform: uppercase;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #888888;
+    text-align: center;
+  }
+
+  .watch {
+    text-align: center;
+  }
+
+  .watch div, canvas {
+    height: 168px;
+  }
+
+  #watch-background {
+    background-color: black;
+    width: 144px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+  }
+
+  #watch {
+    background-color: black;
+    opacity: 0.8;
+  }
+
+  .preview-disabled {
+    color: #999;
+    padding: 60px 20px;
+    font-size: 0.9em;
+  }
+  </style>
+  </head>
+
+  <body>
+    <h1 class='title'>
+      <div class='en'>11 Weeks Configuration</div>
+      <div class='zh-Hans'>11周 表盘配置</div>
+      <div class='zh-Hant'>11周 錶盤設定</div>
+      <div class='ja'>11週間　設定</div>
+    </h1>
+
+    <div class='item-container'>
+      <div class='item-container-header'>
+        <div class='en'>Preview</div>
+        <div class='zh-Hans'>预览</div>
+        <div class='zh-Hant'>預覽</div>
+        <div class='ja'>プレビュー</div>
+      </div>
+      <div class='item-container-content watch'>
+        <div class='item'>
+          <div id='watch-background'>
+            <div class='preview-disabled en'>
+              Preview not available in standalone version.<br>
+              Your settings will still be saved correctly.
+            </div>
+            <div class='preview-disabled zh-Hans'>
+              独立版本中不提供预览。<br>
+              您的设置仍将正确保存。
+            </div>
+            <div class='preview-disabled zh-Hant'>
+              獨立版本中不提供預覽。<br>
+              您的設置仍將正確保存。
+            </div>
+            <div class='preview-disabled ja'>
+              スタンドアロン版ではプレビューはご利用いただけません。<br>
+              設定は正しく保存されます。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='item-container-header'>
+        <div class='en'>Optional Components</div>
+        <div class='zh-Hans'>可选组件</div>
+        <div class='zh-Hant'>可選部件</div>
+        <div class='ja'>オプショナルコンポーネント</div>
+      </div>
+      <div class='item-container-content'>
+        <label class='item'>
+          <div class='en'>Seconds (refresh per sec)</div>
+          <div class='zh-Hans'>记秒</div>
+          <div class='zh-Hant'>記秒</div>
+          <div class='ja'>秒</div>
+          <input id='sec-layer' type='checkbox' class='item-toggle' checked='checked'>
+        </label>
+        <label class='item'>
+          <div class='en'>Outline Frame (refresh per sec)</div>
+          <div class='zh-Hans'>计时外框</div>
+          <div class='zh-Hant'>計時外框</div>
+          <div class='ja'>外枠</div>
+          <input id='frame-layer' type='checkbox' class='item-toggle' checked='checked'>
+        </label>
+        <label class='item'>
+          <div class='en'>Pebble Battery</div>
+          <div class='zh-Hans'>手表电量</div>
+          <div class='zh-Hant'>手錶電量</div>
+          <div class='ja'>時計電池量</div>
+          <input id='battery-layer' type='checkbox' class='item-toggle' checked='checked'>
+        </label>
+        <label class='item'>
+          <div class='en'>Phone Battery &amp; Bluetooth</div>
+          <div class='zh-Hans'>手机电量与蓝牙</div>
+          <div class='zh-Hant'>手機電量與藍牙</div>
+          <div class='ja'>携帯電池量とBluetooth</div>
+          <input id='bt-phone-layer' type='checkbox' class='item-toggle' checked='checked'>
+        </label>
+      </div>
+      <div class='item-container-footer'>
+        <div class='en'>
+          <ul>
+            <li>The outline frame is using a timer and second tick, which will increase battery usage.</li>
+            <li>The seconds part need second tick, which will increase battery usage a little.</li>
+            <li>Minute tick will be used when outline frame and seconds be hidden, which will save power.</li>
+          </ul>
+        </div>
+        <div class='zh-Hans'>
+          <ul>
+            <li>计时外框需使用定时器并需要每秒刷新,会增加电量消耗。</li>
+            <li>记秒需要每秒刷新,会稍增加电量消耗。</li>
+            <li>隐藏计时外框和记秒部分,将改为每分刷新,可节省部分电量。</li>
+          </ul>
+        </div>
+        <div class='zh-Hant'>
+          <ul>
+            <li>計時外框需使用定時器並需每秒更新,將增加電量消耗。</li>
+            <li>記秒需每秒更新,將稍許增加電量消耗。</li>
+            <li>隱藏計時外框和記秒部分,將切為每分更新,可節省部分電量。</li>
+          </ul>
+        </div>
+        <div class='ja'>
+          <ul>
+            <li>「外枠」はタイマーと秒更新が必要なため、電池使用量が増えることになります。</li>
+            <li>「秒」は秒更新が必要なため、電池使用量が少し増えることになります。</li>
+            <li>「外枠」と「秒」を非表示にしたら、分更新になるため、電池使用量が少なくなります。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class='item-container'>
+      <div class='button-container'>
+        <input id='submit_button' type='button' class='item-button' value='SAVE' />
+        <div id='submit_button-en' style='display:none;'>SAVE</div>
+        <div id='submit_button-zh-Hans' style='display:none;'>保存</div>
+        <div id='submit_button-zh-Hant' style='display:none;'>存儲</div>
+        <div id='submit_button-ja' style='display:none;'>保存</div>
+      </div>
+    </div>
+  </body>
+  <script>
+  var keys = {
+    'sec-layer': 1,
+    'frame-layer': 2,
+    'battery-layer': 4,
+    'bt-phone-layer': 8
+  };
+  function getConfigData(needSave) {
+
+    var options = {};
+
+    for (var key in keys) {
+      var ctrl = document.getElementById(key);
+      var value = ctrl.checked;
+      options[key] = value;
+
+      if (needSave) {
+        // if need save, save for next launch
+        if (!value) {
+          localStorage.setItem(key, '1');
+        } else {
+          localStorage.removeItem(key);
+        }
+      }
+    }
+
+    // console.log('Got options: ' + JSON.stringify(options));
+    return options;
+  }
+
+  function getQueryParam(variable, defaultValue) {
+    var query = location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (pair[0] === variable) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+    return defaultValue || false;
+  }
+
+  function getConfigFlags() {
+    var options = getConfigData(true);
+    var config = 0;
+    for (var key in keys) {
+      if (!options[key]) {
+        config |= keys[key];
+      }
+    }
+    return {
+      'config': config
+    };
+  }
+
+  function getSupportedLanguage(lang) {
+    var ret = 'en',
+        hans = ['-hans', '-cn'],
+        i,
+        isHans = false;
+    if (lang) {
+      lang = lang.toLowerCase();
+      if (lang.startsWith('zh')) {
+        for (i = 0; i < hans.length; i++) {
+          if (lang.indexOf(hans[i]) >= 0) {
+            isHans = true;
+            break;
+          }
+        }
+
+        ret = isHans ? 'zh-Hans' : 'zh-Hant';
+      } else if (lang.startsWith('ja')) {
+        ret = 'ja';
+      }
+    }
+
+    return ret;
+  }
+
+  function setUILanguage(lang) {
+    lang = getSupportedLanguage(lang);
+    var ctrls = {
+      'submit_button': 'value'
+    }, langClasses = [
+      'en', 'zh-Hans', 'zh-Hant', 'ja'
+    ], lables, i, j, isSame;
+
+    for (i = 0; i < langClasses.length; i++) {
+      labels = document.getElementsByClassName(langClasses[i]);
+      isSame = lang === langClasses[i];
+      for (j = 0; j < labels.length; j++) {
+        labels[j].classList.remove(isSame ? 'hide' : 'show');
+        labels[j].classList.add(isSame ? 'show' : 'hide');
+      }
+    }
+    document.getElementsByTagName('html')[0].setAttribute('lang', lang);
+
+    for (var c in ctrls) {
+      var ctrl = document.getElementById(c);
+      var div = document.getElementById(c + '-' + lang);
+      if (ctrl && div) {
+        ctrl[ctrls[c]] = div.innerHTML;
+      }
+    }
+  }
+
+  // Add custom toggle styling
+  (function() {
+    var toggles = document.querySelectorAll('.item-toggle');
+    for (var i = 0; i < toggles.length; i++) {
+      var toggle = toggles[i];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'item-styled-toggle-wrapper';
+
+      var styledToggle = document.createElement('div');
+      styledToggle.className = 'item-styled-toggle';
+
+      for (var j = 0; j < 3; j++) {
+        var bar = document.createElement('div');
+        bar.className = 'item-styled-toggle-bar';
+        styledToggle.appendChild(bar);
+      }
+
+      wrapper.appendChild(styledToggle);
+      toggle.parentNode.insertBefore(wrapper, toggle.nextSibling);
+    }
+  })();
+
+  var submitButton = document.getElementById('submit_button');
+  submitButton.addEventListener('click', function() {
+    console.log('Submit');
+
+    // Set the return URL depending on the runtime environment
+    var return_to = getQueryParam('return_to', 'pebblejs://close#');
+    document.location = return_to + encodeURIComponent(JSON.stringify(getConfigFlags()));
+  });
+
+  (function() {
+    // Load any previously saved configuration, if available
+    for (var key in keys) {
+      var ctrl = document.getElementById(key);
+      var value = localStorage[key];
+      ctrl.checked = value ? false : true;
+    }
+    setUILanguage(navigator.language || navigator.userLanguage);
+  })();
+  </script>
+</html>
