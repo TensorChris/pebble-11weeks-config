@@ -1,60 +1,43 @@
-# Pebble 11 Weeks Watchface - Configuration Page
+# Pebble 11 Weeks Watchface
 
-A self-hosted configuration page for the "11 Weeks" Pebble watchface with live preview functionality.
+A beautiful calendar watchface for Pebble showing the current week of the year with customizable display options and live preview.
 
-## 🎯 About This Project
+## 🎯 About
 
 This is a repackaged version of the excellent **11 Weeks Watchface** originally created by **[programus@gmail.com](https://github.com/programus/pebble-watchface-11weeks)**.
 
-The original configuration page is no longer accessible at `http://programus.coding.me/pebble-watchface-11weeks/html/config.html`, making it impossible to customize the watchface settings. This repository provides a working alternative hosted on GitHub Pages.
-
-**Full credit goes to the original author** for creating this beautiful watchface. This project only re-hosts the configuration interface.
-
-## 📦 What's Included
-
-- `config.html` - Configuration page with embedded JavaScript
-- `js/` - Watch preview rendering libraries
-- `resources/images/` - Watchface graphics for live preview
-- `.pbw` file - Repackaged watchface pointing to the new config URL
-
-## 🚀 Live Configuration Page
-
-The configuration page is hosted at:
-```
-https://tensorchris.github.io/pebble-11weeks-config/config.html
-```
+**Full credit goes to the original author** for creating this beautiful watchface.
 
 ## 💾 Installation
 
-### Download
+### Option 1: Rebble App Store (Recommended)
 
-**📦 [Download 11weeks-watchface-v2.2.pbw](releases/11weeks-watchface-v2.2.pbw)** (Latest - v2.2 - RECOMPILED! ✅)
+**🏪 [Install from Rebble App Store](https://apps.rebble.io/en_US/application/6903d9978e00390009cf73d9)**
+
+The easiest way to install and keep the watchface updated.
+
+### Option 2: Direct Download
+
+**📦 [Download 11weeks-watchface-v2.2.pbw](releases/11weeks-watchface-v2.2.pbw)** (Latest - v2.2)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**✅ FULLY FUNCTIONAL VERSION - Recompiled from source with new UUID!**
-
-This version was recompiled using Pebble SDK with the new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`), ensuring:
-- ✅ **Settings work perfectly!** No more timeout errors
-- ✅ **Ready for Rebble Store** - No UUID conflicts
-- ✅ **Full Pebble 2 support** - Proper Diorite binaries included
-- ✅ **All platforms**: Pebble, Pebble Steel, Pebble Time series, Pebble 2
-
-**Note:** Recompiled from source code with companyName (TensorChris), proper description with credits, and config page URL updated.
+**Features:**
+- ✅ Settings work perfectly
+- ✅ Full Pebble 2 support
+- ✅ All platforms: Pebble, Pebble Steel, Pebble Time series, Pebble 2
 
 ### Screenshots
 
 ![Phone Battery View](screenshots/phone-battery.png)
 ![Pebble Charging](screenshots/pebble-charging.png)
 
-### Install
+### Installation Steps
 
-1. Download the `.pbw` file
-2. Transfer it to your phone
-3. Open it with the Pebble app
-4. The watchface will be installed automatically
-5. Open the watchface settings in the Pebble app
-6. Configure your preferred options with live preview!
+1. Install from Rebble App Store **OR** download the `.pbw` file and transfer it to your phone
+2. Open with the Pebble app - it will be installed automatically
+3. Open the watchface settings in the Pebble app
+4. Configure your preferred options with live preview!
 
 ## ⚙️ Configuration Options
 
@@ -77,40 +60,6 @@ The page offers the following customizable settings:
   - Traditional Chinese (zh-Hant)
   - Japanese (ja)
 
-## 🔧 For Developers
-
-### Local Testing
-
-```bash
-# Start a local HTTP server
-cd pebble-11weeks-config
-python3 -m http.server 8000
-
-# Open in browser
-open http://localhost:8000/config.html
-```
-
-### Hosting Your Own
-
-#### Option 1: GitHub Pages (Free)
-
-1. Fork this repository
-2. Enable GitHub Pages in Settings → Pages
-3. Use the URL: `https://YOUR-USERNAME.github.io/pebble-11weeks-config/config.html`
-
-#### Option 2: Any Web Server
-
-1. Upload all files to your web server
-2. Ensure the page is accessible via HTTPS
-3. Update the watchface `.pbw` to point to your URL
-
-### Modifying the Watchface
-
-To point the watchface to your own configuration URL:
-
-1. Clone the [original repository](https://github.com/programus/pebble-watchface-11weeks)
-2. Edit `src/js/pebble-js-app.js` and change the URL in the `showConfiguration` event
-3. Repackage the `.pbw` file (or use the method described in `GITHUB_PAGES_SETUP.md`)
 
 ## 📜 Version History
 
@@ -183,6 +132,5 @@ This project respects the license of the original 11 Weeks Watchface project. Pl
 
 ## 🔗 Links
 
+- **Rebble App Store**: https://apps.rebble.io/en_US/application/6903d9978e00390009cf73d9
 - **Original Project**: https://github.com/programus/pebble-watchface-11weeks
-- **This Config Page**: https://tensorchris.github.io/pebble-11weeks-config/config.html
-- **Original Config URL** (no longer available): `http://programus.coding.me/pebble-watchface-11weeks/html/config.html`
