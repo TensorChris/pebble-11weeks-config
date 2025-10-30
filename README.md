@@ -28,11 +28,11 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.6.pbw](releases/11weeks-watchface-v2.1.6.pbw)** (Latest - v2.1.6 - Working!)
+**📦 [Download 11weeks-watchface-v2.1.7.pbw](releases/11weeks-watchface-v2.1.7.pbw)** (Latest - v2.1.7 - WORKING!)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**Note:** v2.1.6 uses the original JavaScript code (only URL changed) for maximum compatibility. Includes proper Diorite (Pebble 2) binaries. Uses new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. Works on all Pebble models.
+**Note:** v2.1.7 is based on the proven working version with updated metadata. Includes proper Diorite (Pebble 2) binaries. Uses new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. Works on all Pebble models.
 
 ### Screenshots
 
@@ -106,11 +106,16 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1.6** (Current)
-- **Reverted to original JavaScript code** for maximum compatibility
-- Only changed the configuration URL (nothing else modified in JavaScript)
+**v2.1.7** (Current - WORKING!)
+- **Based on proven working version** that had settings functioning correctly
+- Updated metadata: companyName, longName, UUID, description
+- Added screenshots to app
 - Full Pebble 2 (Diorite) support with proper binaries
 - Recommended for both sideloading and Rebble Store submissions
+
+**v2.1.6**
+- Attempted revert to original JavaScript
+- Settings still not working - not recommended
 
 **v2.1.5**
 - Attempted fix with modified JavaScript (caused issues)
