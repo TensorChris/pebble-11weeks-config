@@ -28,13 +28,11 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-calendar-rebble.pbw](releases/11weeks-calendar-rebble.pbw)** (Latest - Rebble Store Version)
-
-Alternative: [Download 11weeks-watchface-v2.1.1.pbw](releases/11weeks-watchface-v2.1.1.pbw) (GitHub Version)
+**📦 [Download 11weeks-watchface-v2.1.2.pbw](releases/11weeks-watchface-v2.1.2.pbw)** (Latest - v2.1.2)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**Note:** The "11 Weeks Calendar" version uses a different UUID to avoid conflicts with the original watchface in the Rebble App Store.
+**Note:** v2.1.2 uses a new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. This is the recommended version for both sideloading and Rebble submissions.
 
 ### Screenshots
 
@@ -108,11 +106,16 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1.1** (Current)
+**v2.1.2** (Current)
+- New UUID to avoid conflicts with original watchface in Rebble App Store
+- Added Diorite platform support (Pebble 2)
+- All features from v2.1.1 maintained
+- Recommended for both sideloading and Rebble submissions
+
+**v2.1.1**
 - Added complete original description from programus@gmail.com
 - Included watchface screenshots in Pebble app
 - Proper credits in app description
-- All features from v2.1 maintained
 
 **v2.1**
 - Settings now persist correctly when reopening configuration
