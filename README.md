@@ -28,11 +28,15 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.7.pbw](releases/11weeks-watchface-v2.1.7.pbw)** (Latest - v2.1.7 - WORKING!)
+**📦 [Download 11weeks-watchface-v2.1.8-personal.pbw](releases/11weeks-watchface-v2.1.8-personal.pbw)** (Latest - v2.1.8 - WORKING! ✅)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
-**Note:** v2.1.7 is based on the proven working version with updated metadata. Includes proper Diorite (Pebble 2) binaries. Uses new UUID (`8ae4dd92-b5fa-42fa-aca9-d326dfad417f`) to avoid conflicts with the original watchface in the Rebble App Store. Works on all Pebble models.
+**⚠️ IMPORTANT:** This version uses the **original UUID** (`5d124af2-30f2-44b2-a32d-b459a159b489`) for full compatibility. Settings work perfectly! However, this means:
+- ✅ **FOR PERSONAL USE**: Settings and config page work flawlessly
+- ❌ **NOT FOR REBBLE STORE**: Cannot be submitted due to UUID conflict with original
+
+**Note:** Includes updated companyName (TensorChris) and description with proper credits. Works on Aplite and Basalt platforms (Pebble, Pebble Steel, Pebble Time series). Pebble 2 works via Aplite compatibility.
 
 ### Screenshots
 
@@ -106,12 +110,17 @@ To point the watchface to your own configuration URL:
 
 ## 📜 Version History
 
-**v2.1.7** (Current - WORKING!)
-- **Based on proven working version** that had settings functioning correctly
-- Updated metadata: companyName, longName, UUID, description
-- Added screenshots to app
-- Full Pebble 2 (Diorite) support with proper binaries
-- Recommended for both sideloading and Rebble Store submissions
+**v2.1.8-personal** (Current - WORKING! ✅)
+- **Settings work perfectly!** This is the fully functional version
+- Uses **original UUID** for compatibility (not for Rebble Store)
+- Updated companyName: TensorChris
+- Added description with proper credits
+- Config page: https://tensorchris.github.io/pebble-11weeks-config/config.html
+- Recommended for personal sideloading only
+
+**v2.1.7**
+- Attempted to use new UUID with old binaries
+- Settings timeout issue - not recommended
 
 **v2.1.6**
 - Attempted revert to original JavaScript
