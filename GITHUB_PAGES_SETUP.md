@@ -1,66 +1,66 @@
-# GitHub Pages Setup Anleitung
+# GitHub Pages Setup Guide
 
-## 📋 Schritt-für-Schritt Anleitung
+## 📋 Step-by-Step Instructions
 
-### Schritt 1: GitHub Repository erstellen
+### Step 1: Create GitHub Repository
 
-1. Gehe zu https://github.com/new
-2. Erstelle ein neues Repository mit folgenden Einstellungen:
-   - **Repository name**: `pebble-11weeks-config` (oder ein anderer Name deiner Wahl)
+1. Go to https://github.com/new
+2. Create a new repository with the following settings:
+   - **Repository name**: `pebble-11weeks-config` (or any name you prefer)
    - **Description**: "Configuration page for Pebble 11 Weeks Watchface"
-   - **Visibility**: Public (wichtig für GitHub Pages!)
-   - **NICHT** "Initialize this repository with a README" ankreuzen (wir haben bereits Dateien)
-3. Klicke auf "Create repository"
+   - **Visibility**: Public (required for GitHub Pages!)
+   - **DO NOT** check "Initialize this repository with a README" (we already have files)
+3. Click "Create repository"
 
-### Schritt 2: Repository auf GitHub pushen
+### Step 2: Push Repository to GitHub
 
-Nach dem Erstellen zeigt GitHub dir Befehle an. Verwende diese im Terminal:
+After creating the repository, GitHub will show you commands. Use these in the terminal:
 
 ```bash
 cd "/Users/chris/Library/CloudStorage/OneDrive-TensorFiveGmbH/Apps/pebble-11weeks-config"
 
-# Füge das GitHub Repository als Remote hinzu
-git remote add origin https://github.com/DEIN-USERNAME/pebble-11weeks-config.git
+# Add the GitHub repository as remote
+git remote add origin https://github.com/YOUR-USERNAME/pebble-11weeks-config.git
 
-# Push zum Repository
+# Push to the repository
 git push -u origin main
 ```
 
-**Wichtig**: Ersetze `DEIN-USERNAME` mit deinem GitHub Benutzernamen!
+**Important**: Replace `YOUR-USERNAME` with your GitHub username!
 
-### Schritt 3: GitHub Pages aktivieren
+### Step 3: Enable GitHub Pages
 
-1. Gehe zu deinem Repository auf GitHub
-2. Klicke auf **Settings** (oben rechts)
-3. Scrolle im linken Menü zu **Pages**
-4. Unter "Source" wähle:
+1. Go to your repository on GitHub
+2. Click **Settings** (top right)
+3. Scroll in the left menu to **Pages**
+4. Under "Source" select:
    - **Branch**: `main`
    - **Folder**: `/ (root)`
-5. Klicke auf **Save**
+5. Click **Save**
 
-### Schritt 4: Auf Deployment warten
+### Step 4: Wait for Deployment
 
-1. GitHub Pages baut deine Seite automatisch (dauert 1-2 Minuten)
-2. Wenn fertig, siehst du eine grüne Box mit der URL:
+1. GitHub Pages automatically builds your site (takes 1-2 minutes)
+2. When finished, you'll see a green box with the URL:
    ```
-   Your site is live at https://DEIN-USERNAME.github.io/pebble-11weeks-config/
+   Your site is live at https://YOUR-USERNAME.github.io/pebble-11weeks-config/
    ```
-3. Deine Config-Seite ist dann unter:
+3. Your config page will be at:
    ```
-   https://DEIN-USERNAME.github.io/pebble-11weeks-config/config.html
+   https://YOUR-USERNAME.github.io/pebble-11weeks-config/config.html
    ```
 
-## 🎯 Die finale URL
+## 🎯 The Final URL
 
-Nach dem Deployment kannst du diese URL in deiner Pebble App verwenden:
+After deployment, you can use this URL in your Pebble app:
 
 ```
-https://DEIN-USERNAME.github.io/pebble-11weeks-config/config.html
+https://YOUR-USERNAME.github.io/pebble-11weeks-config/config.html
 ```
 
-## 🔄 Änderungen hochladen
+## 🔄 Pushing Updates
 
-Falls du später Änderungen machst:
+If you make changes later:
 
 ```bash
 cd "/Users/chris/Library/CloudStorage/OneDrive-TensorFiveGmbH/Apps/pebble-11weeks-config"
@@ -69,25 +69,25 @@ git commit -m "Update configuration page"
 git push
 ```
 
-GitHub Pages wird automatisch neu gebaut!
+GitHub Pages will automatically rebuild!
 
-## ✅ Testen
+## ✅ Testing
 
-Nach dem Deployment:
-1. Öffne die URL im Browser
-2. Teste alle Einstellungen
-3. Klicke auf "SAVE" - es sollte eine URL mit den Einstellungen generiert werden
+After deployment:
+1. Open the URL in your browser
+2. Test all settings
+3. Click "SAVE" - it should generate a URL with your settings
 
 ## 🔧 Troubleshooting
 
 **Problem**: "404 - File not found"
-- **Lösung**: Warte 2-3 Minuten, GitHub Pages braucht Zeit zum Bauen
+- **Solution**: Wait 2-3 minutes, GitHub Pages needs time to build
 
-**Problem**: GitHub fragt nach Authentifizierung beim Push
-- **Lösung**: Verwende ein Personal Access Token statt Passwort
-  - Gehe zu GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
-  - "Generate new token" → Wähle "repo" Scope
-  - Verwende das Token als Passwort
+**Problem**: GitHub asks for authentication when pushing
+- **Solution**: Use a Personal Access Token instead of password
+  - Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+  - "Generate new token" → Select "repo" scope
+  - Use the token as password
 
-**Problem**: Die Seite wird nicht angezeigt
-- **Lösung**: Prüfe, ob das Repository **Public** ist
+**Problem**: The page isn't displayed
+- **Solution**: Check if the repository is **Public**
