@@ -26,10 +26,20 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ## 💾 Installation
 
-1. Download the latest `.pbw` file from the releases
-2. Install it on your Pebble watch via the Pebble app
-3. Open the watchface settings in the Pebble app
-4. Configure your preferred options with live preview!
+### Download
+
+**📦 [Download 11weeks-watchface-v2.1.pbw](releases/11weeks-watchface-v2.1.pbw)**
+
+Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
+
+### Install
+
+1. Download the `.pbw` file
+2. Transfer it to your phone
+3. Open it with the Pebble app
+4. The watchface will be installed automatically
+5. Open the watchface settings in the Pebble app
+6. Configure your preferred options with live preview!
 
 ## ⚙️ Configuration Options
 
