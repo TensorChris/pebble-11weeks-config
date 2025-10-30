@@ -28,9 +28,13 @@ https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 ### Download
 
-**📦 [Download 11weeks-watchface-v2.1.1.pbw](releases/11weeks-watchface-v2.1.1.pbw)** (Latest)
+**📦 [Download 11weeks-calendar-rebble.pbw](releases/11weeks-calendar-rebble.pbw)** (Latest - Rebble Store Version)
+
+Alternative: [Download 11weeks-watchface-v2.1.1.pbw](releases/11weeks-watchface-v2.1.1.pbw) (GitHub Version)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
+
+**Note:** The "11 Weeks Calendar" version uses a different UUID to avoid conflicts with the original watchface in the Rebble App Store.
 
 ### Screenshots
 
