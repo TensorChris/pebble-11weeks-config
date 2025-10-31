@@ -18,7 +18,7 @@ The easiest way to install and keep the watchface updated.
 
 ### Option 2: Direct Download
 
-**📦 [Download 11weeks-watchface-v2.2.pbw](releases/11weeks-watchface-v2.2.pbw)** (Latest - v2.2)
+**📦 [Download 11weeks-watchface-v2.4.pbw](releases/11weeks-watchface-v2.4.pbw)** (Latest - v2.4)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
@@ -45,8 +45,9 @@ The page offers the following customizable settings:
 
 - **Seconds**: Display seconds (increases battery usage)
 - **Outline Frame**: Animated frame border (increases battery usage)
-- **Pebble Battery**: Show watch battery level
+- **Pebble Battery**: Show watch battery level (now displays two digits: 05, 42, 73)
 - **Phone Battery & Bluetooth**: Show phone battery and Bluetooth status
+- **Week starts on Monday**: Start the week on Monday instead of Sunday
 
 **Note:** Disabling the outline frame and seconds reduces battery consumption as the watchface will update once per minute instead of once per second.
 
@@ -63,7 +64,14 @@ The page offers the following customizable settings:
 
 ## 📜 Version History
 
-**v2.2** (Current - RECOMPILED! ✅)
+**v2.4** (Current - NEW FEATURES! ✨)
+- **Week starts on Monday** option with instant updates
+- **Two-digit battery display** (05, 42, 73 instead of 5, 42, 73)
+- Dynamic weekday headers that adapt to week start preference
+- Improved config persistence across restarts
+- Instant visual updates when changing settings
+
+**v2.2** (RECOMPILED! ✅)
 - **Recompiled from source** using Pebble SDK with new UUID
 - **Settings work perfectly!** Phone and watch communicate correctly
 - New UUID: `8ae4dd92-b5fa-42fa-aca9-d326dfad417f`
