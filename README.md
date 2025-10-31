@@ -55,11 +55,6 @@ The page offers the following customizable settings:
 
 - ✅ **Live Preview**: See your changes in real-time with a canvas-based watchface preview
 - ✅ **Persistent Settings**: Your configuration is saved and loads correctly each time
-- ✅ **Multi-language Support**: Auto-detects your browser language
-  - English (en)
-  - Simplified Chinese (zh-Hans)
-  - Traditional Chinese (zh-Hant)
-  - Japanese (ja)
 
 
 ## 📜 Version History
