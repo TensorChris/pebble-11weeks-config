@@ -323,6 +323,14 @@
 
       wrapper.appendChild(styledToggle);
       toggle.parentNode.insertBefore(wrapper, toggle.nextSibling);
+
+      // Add change listener to invalidate cache when toggled
+      toggle.addEventListener('change', function() {
+        if (watch && watch.imageBuff) {
+          watch.imageBuff.buff = null;
+          watch.imageBuff.time = 0;
+        }
+      });
     }
   })();
 
