@@ -1,0 +1,35 @@
+# Claude Code
+.claude/
+.claude_code/
+
+# IDE - IntelliJ/PyCharm
+.idea/
+*.iml
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Pebble Build
+build/
+
+# Node modules (if using npm)
+node_modules/
+package-lock.json
+
+# Temporary files
+*.tmp
+*.log
+*~
+*.backup
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Local API keys (keep your personal keys safe)
+# NOTE: src/js/pebble-js-app.js contains API key - be careful not to commit!

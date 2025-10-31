@@ -18,7 +18,7 @@ The easiest way to install and keep the watchface updated.
 
 ### Option 2: Direct Download
 
-**📦 [Download 11weeks-watchface-v2.4.pbw](releases/11weeks-watchface-v2.4.pbw)** (Latest - v2.4)
+**📦 [Download 11weeks-watchface-v2.6.pbw](releases/11weeks-watchface-v2.6.pbw)** (Latest - v2.6)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
@@ -53,25 +53,32 @@ The page offers the following customizable settings:
 
 ## ✨ Features
 
-- ✅ **Live Preview**: See your changes in real-time with a canvas-based watchface preview
+- ✅ **Embedded Configuration**: No cloud dependency - config page is embedded directly in the watchface
 - ✅ **Persistent Settings**: Your configuration is saved and loads correctly each time
+- ✅ **Works Offline**: All functionality works without internet connection
 
 
 ## 📜 Version History
 
-**v2.4** (Current - NEW FEATURES! ✨)
+**v2.6** (Current - MAJOR UPDATE! 🚀)
+- **Embedded configuration page** - no cloud dependency!
+- Config page embedded as Data-URI directly in JavaScript
+- Works completely offline
+- Simplified, clean settings interface
+- All 5 settings fully functional
+- Improved reliability and faster loading
+
+**v2.4** (Previous)
 - **Week starts on Monday** option with instant updates
 - **Two-digit battery display** (15, 42, 73 instead of 1, 4, 7)
 - Dynamic weekday headers that adapt to week start preference
 - Improved config persistence across restarts
-- Instant visual updates when changing settings
 
 **v2.2**
 - **Recompiled from source** using Pebble SDK with new UUID
 - **Settings work perfectly!** Phone and watch communicate correctly
 - New UUID: `8ae4dd92-b5fa-42fa-aca9-d326dfad417f`
 - Full Pebble 2 (Diorite) support with proper binaries
-- Config page: https://tensorchris.github.io/pebble-11weeks-config/config.html
 
 **v2.0** (Original)
 - Created by programus@gmail.com
