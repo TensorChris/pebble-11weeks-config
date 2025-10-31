@@ -27,5 +27,6 @@ bool need_bluetooth_handler();
 bool need_battery_handler();
 
 bool week_starts_monday();
+bool hide_quiet_time();
 
 #endif /* config_h */

@@ -14,6 +14,7 @@
 #define BATTERY_FLG   (1 << 2)
 #define BT_PHONE_FLG  (1 << 3)
 #define WEEK_START_MONDAY_FLG  (1 << 4)
+#define QUIET_TIME_FLG  (1 << 5)
 
 static int32_t s_config = 0;
 
@@ -68,6 +69,10 @@ bool week_starts_monday() {
   // Checkbox ON (checked) = Flag 0 = Monday start TRUE
   // Checkbox OFF (unchecked) = Flag 1 = Monday start FALSE
   return !is_flag_marked(WEEK_START_MONDAY_FLG);
+}
+
+bool hide_quiet_time() {
+  return is_flag_marked(QUIET_TIME_FLG);
 }
 
 static bool is_flag_marked(int flag) {

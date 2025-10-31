@@ -12,6 +12,7 @@
 #include "watch_battery_layer.h"
 #include "phone_battery_layer.h"
 #include "bluetooth_layer.h"
+#include "quiet_time_layer.h"
 
 #define KEY_PHONE_BATTERY     8
 #define KEY_CONFIG_VALUE      6
@@ -28,6 +29,7 @@ static Layer* s_frame_layer;
 static Layer* s_watch_battery_layer;
 static Layer* s_phone_battery_layer;
 static Layer* s_bluetooth_layer;
+static Layer* s_quiet_time_layer;
 
 static time_t s_now_t;
 static struct tm s_now_tm;
@@ -126,6 +128,7 @@ static void apply_config() {
     layer_set_hidden(s_bluetooth_layer, s_battery_api_supported);
     layer_set_hidden(s_phone_battery_layer, !s_battery_api_supported);
   }
+  layer_set_hidden(s_quiet_time_layer, hide_quiet_time());
   // Force calendar redraw to apply week start changes
   calendar_layer_force_update();  // Invalidate buffer
   calendar_layer_update_time(&s_now_t, &s_now_tm);
@@ -157,7 +160,11 @@ static void main_window_load(Window* window) {
   bluetooth_layer_create();
   s_bluetooth_layer = bluetooth_layer_get_layer();
   layer_add_child(window_get_root_layer(s_main_window), s_bluetooth_layer);
-  
+  // create quiet time layer
+  quiet_time_layer_create();
+  s_quiet_time_layer = quiet_time_layer_get_layer();
+  layer_add_child(window_get_root_layer(s_main_window), s_quiet_time_layer);
+
   apply_config();
   
   // display time from the beginning
@@ -177,10 +184,19 @@ static void main_window_unload(Window* window) {
   phone_battery_layer_destroy();
   // destroy bluetooth layer
   bluetooth_layer_destroy();
+  // destroy quiet time layer
+  quiet_time_layer_destroy();
 }
 
 static void tick_handler(struct tm* tick_time, TimeUnits units_changed) {
   update_time(false);
+
+  // Poll Quiet Time status (only if layer is visible)
+  if (!hide_quiet_time()) {
+    bool is_active = quiet_time_is_active();
+    quiet_time_layer_update(is_active);
+    layer_mark_dirty(s_quiet_time_layer);
+  }
 }
 
 static void update_time(bool is_init) {

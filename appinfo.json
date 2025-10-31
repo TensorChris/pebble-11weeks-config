@@ -38,6 +38,11 @@
                 "type": "bitmap"
             },
             {
+                "file": "images/quiet_time_icon.png",
+                "name": "IMAGE_QUIET_TIME",
+                "type": "bitmap"
+            },
+            {
                 "file": "images/watch_battery.png",
                 "name": "IMAGE_WATCH_BATTERY",
                 "type": "bitmap"
@@ -72,8 +77,8 @@
         "diorite"
     ],
     "uuid": "8ae4dd92-b5fa-42fa-aca9-d326dfad417f",
-    "versionLabel": "2.6",
-    "changeLog": "Embedded config (no cloud dependency). Week starts on Monday. Two-digit battery. Full Pebble 2 support. Original by programus@gmail.com",
+    "versionLabel": "2.7",
+    "changeLog": "Quiet Time indicator. Embedded config (no cloud). Week starts on Monday. Two-digit battery. Full Pebble 2 support. Original by programus@gmail.com",
     "watchapp": {
         "watchface": true
     }
