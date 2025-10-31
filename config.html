@@ -135,6 +135,13 @@
           <div class='ja'>携帯電池量とBluetooth</div>
           <input id='bt-phone-layer' type='checkbox' class='item-toggle' checked='checked'>
         </label>
+        <label class='item'>
+          <div class='en'>Week starts on Monday</div>
+          <div class='zh-Hans'>周一为每周第一天</div>
+          <div class='zh-Hant'>週一為每週第一天</div>
+          <div class='ja'>月曜日を週の始まりにする</div>
+          <input id='week-start-monday' type='checkbox' class='item-toggle' checked='checked'>
+        </label>
       </div>
       <div class='item-container-footer'>
         <div class='en'>
@@ -183,7 +190,8 @@
     'sec-layer': 1,
     'frame-layer': 2,
     'battery-layer': 4,
-    'bt-phone-layer': 8
+    'bt-phone-layer': 8,
+    'week-start-monday': 16
   };
   function getConfigData(needSave) {
 
