@@ -160,8 +160,8 @@ static void calendar_layer_draw_weekday_headers(GContext* ctx) {
     graphics_context_set_compositing_mode(ctx, GCompOpAssign);
     // First letter: uppercase
     graphics_draw_tiny_letter(ctx, upper[i], header_x, header_y);
-    // Second letter: lowercase, with extra spacing (TN_WIDTH + 2 = 5 pixels)
-    graphics_draw_tiny_letter(ctx, lower[i], header_x + TN_WIDTH + 2, header_y);
+    // Second letter: lowercase, 1 pixel closer (TN_WIDTH + 1 = 4 pixels)
+    graphics_draw_tiny_letter(ctx, lower[i], header_x + TN_WIDTH + 1, header_y);
   }
 }
 

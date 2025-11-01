@@ -18,7 +18,7 @@ The easiest way to install and keep the watchface updated.
 
 ### Option 2: Direct Download
 
-**📦 [Download 11weeks-watchface-v2.8.pbw](releases/11weeks-watchface-v2.8.pbw)** (Latest - v2.8)
+**📦 [Download 11weeks-watchface-v2.8.1.pbw](releases/11weeks-watchface-v2.8.1.pbw)** (Latest - v2.8.1)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
@@ -62,11 +62,12 @@ The page offers the following customizable settings:
 
 ## 📜 Version History
 
-**v2.8** (Current - NEW FEATURE! 📅)
+**v2.8.1** (Current - NEW FEATURE! 📅)
 - **Week Number (CW) Display** - shows ISO 8601 calendar week number
 - Displays to the left of the current week arrow indicator
 - Configurable via settings toggle
 - Safe implementation that preserves calendar integrity
+- **Tighter weekday headers** - reduced letter spacing for cleaner look
 
 **v2.7** (Previous)
 - **Quiet Time Indicator** - shows moon icon when Quiet Time is active
