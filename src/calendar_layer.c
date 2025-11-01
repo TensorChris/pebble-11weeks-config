@@ -305,11 +305,49 @@ static void calendar_layer_draw_mon(GContext* ctx, int tm_mon, int week) {
   graphics_draw_tiny_string(ctx, MON_NAMES[tm_mon], p.x, p.y, 1);
 }
 
+// Calculate ISO 8601 week number (read-only, no side effects)
+static int get_iso_week_number(const struct tm* input_tm) {
+  // CRITICAL: Create local copy IMMEDIATELY to avoid modifying original
+  struct tm tm = *input_tm;
+
+  // ISO 8601 week calculation
+  int day_of_year = tm.tm_yday + 1;
+  int day_of_week = tm.tm_wday;
+  int iso_day_of_week = (day_of_week == 0) ? 6 : (day_of_week - 1);
+  int monday_of_current_week = day_of_year - iso_day_of_week;
+  int jan1_day_of_week = (7 + day_of_week - ((day_of_year - 1) % 7)) % 7;
+  int jan1_iso_day = (jan1_day_of_week == 0) ? 6 : (jan1_day_of_week - 1);
+  int monday_of_week1 = 1 - jan1_iso_day + ((jan1_iso_day <= 3) ? 0 : 7);
+  int week_number = ((monday_of_current_week - monday_of_week1) / 7) + 1;
+
+  // Handle edge cases
+  if (week_number < 1) return 52;
+  if (week_number > 52 && monday_of_current_week > 360) {
+    return week_number > 53 ? 1 : week_number;
+  }
+  return week_number;
+}
+
 static void calendar_layer_draw_curr_week_indicator(GContext* ctx, int week, bool is_left_side) {
   GPoint p = GPoint(is_left_side ? SX - DX - 2 : SX + DW * CW + DX, SY + CH * week + (CH >> 1) - 1);
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_context_set_stroke_color(ctx, GColorWhite);
-  
+
+  // Draw week number (only on left side)
+  if (!hide_week_numbers() && is_left_side && s_now) {
+    int week_number = get_iso_week_number(s_now);
+    int kw_x = p.x - 12;
+    int kw_y = SY + CH * week + 3;
+
+    graphics_context_set_compositing_mode(ctx, GCompOpAssign);
+    if (week_number > 9) {
+      graphics_draw_tiny_number(ctx, week_number / 10, kw_x, kw_y);
+      graphics_draw_tiny_number(ctx, week_number % 10, kw_x + TN_WIDTH + 2, kw_y);
+    } else {
+      graphics_draw_tiny_number(ctx, week_number, kw_x + TN_WIDTH + 2, kw_y);
+    }
+  }
+
   // rotate 180 degrees if on right.
   gpath_rotate_to(s_right_arrow_path, is_left_side ? 0 : TRIG_MAX_ANGLE >> 1);
   gpath_move_to(s_right_arrow_path, p);

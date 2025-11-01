@@ -28,5 +28,6 @@ bool need_battery_handler();
 
 bool week_starts_monday();
 bool hide_quiet_time();
+bool hide_week_numbers();
 
 #endif /* config_h */

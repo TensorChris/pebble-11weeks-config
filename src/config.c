@@ -15,6 +15,7 @@
 #define BT_PHONE_FLG  (1 << 3)
 #define WEEK_START_MONDAY_FLG  (1 << 4)
 #define QUIET_TIME_FLG  (1 << 5)
+#define WEEK_NUMBERS_FLG  (1 << 6)
 
 static int32_t s_config = 0;
 
@@ -73,6 +74,10 @@ bool week_starts_monday() {
 
 bool hide_quiet_time() {
   return is_flag_marked(QUIET_TIME_FLG);
+}
+
+bool hide_week_numbers() {
+  return is_flag_marked(WEEK_NUMBERS_FLG);
 }
 
 static bool is_flag_marked(int flag) {
