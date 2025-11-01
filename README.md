@@ -18,7 +18,7 @@ The easiest way to install and keep the watchface updated.
 
 ### Option 2: Direct Download
 
-**📦 [Download 11weeks-watchface-v2.7.pbw](releases/11weeks-watchface-v2.7.pbw)** (Latest - v2.7)
+**📦 [Download 11weeks-watchface-v2.8.pbw](releases/11weeks-watchface-v2.8.pbw)** (Latest - v2.8)
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
@@ -49,6 +49,7 @@ The page offers the following customizable settings:
 - **Phone Battery & Bluetooth**: Show phone battery and Bluetooth status
 - **Week starts on Monday**: Start the week on Monday instead of Sunday
 - **Quiet Time Indicator**: Show moon icon when Quiet Time is active
+- **Week Number (CW)**: Display ISO 8601 calendar week number next to current week indicator
 
 **Note:** Disabling the outline frame and seconds reduces battery consumption as the watchface will update once per minute instead of once per second.
 
@@ -61,7 +62,13 @@ The page offers the following customizable settings:
 
 ## 📜 Version History
 
-**v2.7** (Current - NEW FEATURE! 🌙)
+**v2.8** (Current - NEW FEATURE! 📅)
+- **Week Number (CW) Display** - shows ISO 8601 calendar week number
+- Displays to the left of the current week arrow indicator
+- Configurable via settings toggle
+- Safe implementation that preserves calendar integrity
+
+**v2.7** (Previous)
 - **Quiet Time Indicator** - shows moon icon when Quiet Time is active
 - Icon appears above watch battery when Do Not Disturb is enabled
 - Configurable via settings toggle
