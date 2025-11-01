@@ -77,8 +77,8 @@
         "diorite"
     ],
     "uuid": "8ae4dd92-b5fa-42fa-aca9-d326dfad417f",
-    "versionLabel": "2.7",
-    "changeLog": "Quiet Time indicator. Embedded config (no cloud). Week starts on Monday. Two-digit battery. Full Pebble 2 support. Original by programus@gmail.com",
+    "versionLabel": "2.8",
+    "changeLog": "Week number (CW) display. Tighter weekday headers. Quiet Time indicator. Embedded config (no cloud). Week starts on Monday. Two-digit battery. Full Pebble 2 support. Original by programus@gmail.com",
     "watchapp": {
         "watchface": true
     }
