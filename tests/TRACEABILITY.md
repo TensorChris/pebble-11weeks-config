@@ -37,3 +37,13 @@ Hosttest ersetzt diese ergänzenden Nachweise nicht.
 | KAL-06: installierbare PBW | `verify_bundle.py` und erfolgreicher Installationsvorgang in `runtime_probe.py` |
 | KAL-06: unveränderter Vertrag und Tests | `verify_frozen.py`, historisches Testmanifest und Freigabecommit; CI-Abschlussgate |
 | KAL-06: unabhängiges Testreview, gemeinsamer PR | Gesonderter nur lesender Codex-Testreview und PR gegen main; Prozessnachweis im Reviewprotokoll |
+
+## Review-Ergänzungen vor Testfreigabe
+
+| Anforderung | Zusätzlicher Nachweis |
+|---|---|
+| KAL-03 | `runtime_probe.py`: bestätigte echte AppMessage-Nachricht, Sonntag/Montag, echte Stop-/Start-Nachrichten ohne erneute Konfiguration, Kalenderpixel nach Neustart |
+| KAL-05: Anzeigeoptionen | `runtime_probe.py`: sichtbare/ausgeblendete Sekunden, Rahmen, Uhrenbatterie, Bluetooth und Handybatterie, OS-Quiet-Time-Mond und KW-Ziffern; reale Konfigurationsnachrichten |
+| KAL-04: Minutenmodus | Echter Mitternachts-Tick zusätzlich bei ausgeschalteten Sekunden und Rahmen |
+| KAL-05: vorhandene Pixelgrafiken | `test_KAL_05_original_pixel_artwork_is_preserved`: eingefrorene RGBA-Pixelprüfsummen aus Ausgangscommit33ffcf9, unabhängig von den aktuell geladenen Produktressourcen |
+| KAL-06: unabhängiger Freeze-Prüfpfad | Workflow lädt nach dem ersten Freeze den Verifier aus genau diesem historischen Commit statt aus dem Kandidatencheckout |

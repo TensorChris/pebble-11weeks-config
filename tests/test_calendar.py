@@ -125,6 +125,14 @@ class CalendarContract(unittest.TestCase):
                 self.assertEqual(frame['image'].getpixel((x,y)),255*color)
                 self.assertEqual(frame['image'].getpixel((x+w-1,y+h-1)),255*color)
 
+    def test_KAL_05_original_pixel_artwork_is_preserved(self):
+        references = json.loads((ROOT / 'tests/reference-images.json').read_text())
+        for name, reference in references.items():
+            with self.subTest(resource=name):
+                image = Image.open(ROOT / name).convert('RGBA')
+                self.assertEqual(image.size, (reference['width'], reference['height']))
+                self.assertEqual(hashlib.sha256(image.tobytes()).hexdigest(), reference['rgba_sha256'])
+
     def test_KAL_01_reported_friday_and_week_37(self):
         for platform in PLATFORMS:
             for model in MODELS:

@@ -39,7 +39,14 @@ jobs:
         with:
           python-version: '3.13'
       - name: Verify frozen contract and tests
-        run: python tests/verify_frozen.py --candidate
+        run: |
+          FREEZE=$(git log --reverse --diff-filter=A --format=%H -- tests/frozen.sha256 | head -n 1)
+          if [ -n "$FREEZE" ]; then
+            git show "$FREEZE:tests/verify_frozen.py" > "$RUNNER_TEMP/verify-frozen.py"
+            python "$RUNNER_TEMP/verify-frozen.py"
+          else
+            python tests/verify_frozen.py --candidate
+          fi
       - name: Install test dependencies
         run: python -m pip install -r tests/requirements.txt
       - name: Contract tests against real C renderer
@@ -71,9 +78,11 @@ jobs:
         continue-on-error: true
         run: |
           PBW=$(find build -maxdepth 1 -name '*.pbw' -print -quit)
+          status=0
           for platform in aplite basalt diorite; do
-            python tests/runtime_probe.py "$platform" "$PBW"
+            python tests/runtime_probe.py "$platform" "$PBW" || status=1
           done
+          exit "$status"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

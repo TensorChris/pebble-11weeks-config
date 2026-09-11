@@ -116,3 +116,23 @@ gekennzeichneten Testphasenlauf; danach greift immer die historische Referenz.
 
 Die Pipeline prüft Hosttests und echte Emulatoren unabhängig und verlangt am Ende
 beide Ergebnisse. Kandidatenläufe können deshalb erwartungsgemäß rot sein.
+
+Der ergänzte Emulatorlauf sendet echte AppMessage-Konfigurationen mit ACK-Prüfung,
+startet die App über das AppRunState-Protokoll neu und prüft den gespeicherten
+Wochenbeginn ohne erneutes Senden. Jede vorhandene Anzeigeoption wird sichtbar
+an/aus geschaltet; Quiet Time wird über die echte System-Toggle-App aktiviert,
+Uhrenbatterie und Bluetooth werden über die QEMU-Gerätezustände bereitgestellt.
+Ein zusätzlicher Mitternachtslauf prüft den reinen Minutenmodus (Sekunden und
+Rahmen aus). Die Handy-Konfigurationswebseite selbst ist nicht verändert und
+wird nicht im Browser automatisiert; ab der Nachricht wird der echte App-Weg geprüft.
+
+`reference-images.json` enthält ausschließlich unveränderliche RGBA-Pixelreferenzen
+der vorhandenen Bilder aus Ausgangscommit33ffcf9. Die Prüfung hängt somit nicht
+allein von den möglicherweise veränderten Produktbildern ab; Metadaten wie PNG-ICC-
+Profile definieren keine fachliche Erwartung.
+
+Nach dem ersten Test-Freeze lädt der Workflow den Verifier mit `git show` aus der
+historischen Freeze-Revision. Damit kann ein geänderter Kandidaten-Verifier die
+Prüfung nicht selbst umgehen. Wie jeder Repository-Workflow setzt dieser Schutz
+voraus, dass Änderungen am Workflow selbst im PR geprüft und nicht ungeprüft
+übernommen werden; Repository-Administratoren bleiben die Vertrauensgrenze.
