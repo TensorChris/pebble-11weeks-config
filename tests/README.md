@@ -117,14 +117,39 @@ gekennzeichneten Testphasenlauf; danach greift immer die historische Referenz.
 Die Pipeline prüft Hosttests und echte Emulatoren unabhängig und verlangt am Ende
 beide Ergebnisse. Kandidatenläufe können deshalb erwartungsgemäß rot sein.
 
-Der ergänzte Emulatorlauf sendet echte AppMessage-Konfigurationen mit ACK-Prüfung,
-startet die App über das AppRunState-Protokoll neu und prüft den gespeicherten
-Wochenbeginn ohne erneutes Senden. Jede vorhandene Anzeigeoption wird sichtbar
+Der ergänzte Emulatorlauf öffnet die echte JS-Konfiguration mit dem offiziellen
+`AppConfigSetup`-/`showConfiguration`-Pfad und liefert das Speicherergebnis über
+`AppConfigResponse`-/`webviewclosed` zurück. Die unveränderte Produkt-JS speichert
+den Wert in localStorage und sendet AppMessage-Schlüssel 6. Bereits vor Installation
+und Neustart lauscht der Test auf die bestätigte `ready`-Übertragung, bevor er
+eine Konfigurationsseite öffnet. Der Test wartet auf
+ihren echten Erfolgsrückruf nach dem Watch-ACK und prüft die wieder geöffnete
+Seite. Eine direkte Injektion von Schlüssel 6 würde beim Neustart durch den
+JS-`ready`-Handler überschrieben und wird deshalb nicht verwendet. Anschließend
+startet der Test die App über das AppRunState-Protokoll neu und prüft den
+gespeicherten Wochenbeginn in den Kalenderpixeln und in der erneut geöffneten
+Konfigurationsseite, ohne eine neue Konfiguration zu senden. Die Bestätigungen
+werden als separates CI-Artefakt protokolliert. Jede vorhandene Anzeigeoption wird sichtbar
 an/aus geschaltet; Quiet Time wird über die echte System-Toggle-App aktiviert,
 Uhrenbatterie und Bluetooth werden über die QEMU-Gerätezustände bereitgestellt.
 Ein zusätzlicher Mitternachtslauf prüft den reinen Minutenmodus (Sekunden und
 Rahmen aus). Die Handy-Konfigurationswebseite selbst ist nicht verändert und
-wird nicht im Browser automatisiert; ab der Nachricht wird der echte App-Weg geprüft.
+wird nicht im Browser bedient; ihr Öffnen und Speichern durchlaufen die echten
+JS-Ereignisse und den echten AppMessage-/AppSync-Weg. Nur die Handy-Batteriewerte
+werden weiterhin als bestätigte AppMessages mit Schlüssel 8 eingespeist.
+
+Eine bestehende Plattformgrenze bleibt erhalten: Das originale
+[SDK-4.33.1-Archiv](https://sdk.repebble.com/releases/4.33.1/sdk-core.tar.gz)
+definiert in `pebble/aplite/include/pebble.h` ausdrücklich
+`#define quiet_time_is_active(...) (false)`. Auf aplite verlangt der Test daher
+bei sichtbarer wie ausgeblendeter Quiet-Time-Option weiterhin keinen Mond;
+Konfiguration und Host-Getter werden dennoch geprüft. Auf basalt und diorite
+prüft er den echten OS-Zustand mit sichtbarem/ausgeblendetem Mond. Die Probe liest
+diese Fähigkeit aus dem verwendeten SDK-Header und protokolliert dessen SHA-256.
+Eine neue Quiet-Time-Fähigkeit für aplite ist kein Teil von KAL-05.
+Auch bei fehlgeschlagener Initialisierung werden vorhandene Metadaten, der
+Fehler, die bisherigen Konfigurationsbestätigungen und nach Möglichkeit der
+aktuelle Emulatorbildschirm als Diagnoseartefakte gespeichert.
 
 `reference-images.json` enthält ausschließlich unveränderliche RGBA-Pixelreferenzen
 der vorhandenen Bilder aus Ausgangscommit33ffcf9. Die Prüfung hängt somit nicht
@@ -136,3 +161,8 @@ historischen Freeze-Revision. Damit kann ein geänderter Kandidaten-Verifier die
 Prüfung nicht selbst umgehen. Wie jeder Repository-Workflow setzt dieser Schutz
 voraus, dass Änderungen am Workflow selbst im PR geprüft und nicht ungeprüft
 übernommen werden; Repository-Administratoren bleiben die Vertrauensgrenze.
+
+Die CI instrumentiert den Hostbuild mit Coverage und verlangt mit
+`verify_coverage.py` mindestens80% Zeilenabdeckung für jedes Kalendermodul.
+Lokal unter macOS: `GCOV='xcrun llvm-cov gcov' python3 tests/verify_coverage.py`
+nach dem mit `CFLAGS='--coverage -O0 -g'` ausgeführten Hosttest.

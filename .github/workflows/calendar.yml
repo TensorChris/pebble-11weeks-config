@@ -52,7 +52,11 @@ jobs:
       - name: Contract tests against real C renderer
         id: host
         continue-on-error: true
+        env:
+          CFLAGS: --coverage -O0 -g
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Calendar coverage at least 80 percent
+        run: python tests/verify_coverage.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -42,8 +42,8 @@ Hosttest ersetzt diese ergänzenden Nachweise nicht.
 
 | Anforderung | Zusätzlicher Nachweis |
 |---|---|
-| KAL-03 | `runtime_probe.py`: bestätigte echte AppMessage-Nachricht, Sonntag/Montag, echte Stop-/Start-Nachrichten ohne erneute Konfiguration, Kalenderpixel nach Neustart |
-| KAL-05: Anzeigeoptionen | `runtime_probe.py`: sichtbare/ausgeblendete Sekunden, Rahmen, Uhrenbatterie, Bluetooth und Handybatterie, OS-Quiet-Time-Mond und KW-Ziffern; reale Konfigurationsnachrichten |
+| KAL-03 | `runtime_probe.py`: echter `showConfiguration`-/`webviewclosed`-Pfad, Produkt-JS speichert localStorage und bestätigt Watch-ACK; Sonntag/Montag, echte Stop-/Start-Nachrichten ohne erneute Konfiguration, Kalenderpixel und erneut geöffnete JS-Konfigurationsseite nach Neustart |
+| KAL-05: Anzeigeoptionen | `runtime_probe.py`: sichtbare/ausgeblendete Sekunden, Rahmen, Uhrenbatterie, Bluetooth und Handybatterie, OS-Quiet-Time-Mond auf basalt/diorite und KW-Ziffern; aplite bewahrt die im SDK als konstant false definierte Quiet-Time-API bei beiden Optionszuständen. Speichern durch echte JS-Konfigurationsereignisse und AppMessage/AppSync, direkte Nachrichten nur für Handy-Batteriewerte |
 | KAL-04: Minutenmodus | Echter Mitternachts-Tick zusätzlich bei ausgeschalteten Sekunden und Rahmen |
 | KAL-05: vorhandene Pixelgrafiken | `test_KAL_05_original_pixel_artwork_is_preserved`: eingefrorene RGBA-Pixelprüfsummen aus Ausgangscommit33ffcf9, unabhängig von den aktuell geladenen Produktressourcen |
 | KAL-06: unabhängiger Freeze-Prüfpfad | Workflow lädt nach dem ersten Freeze den Verifier aus genau diesem historischen Commit statt aus dem Kandidatencheckout |

@@ -13,12 +13,18 @@ import queue
 import subprocess
 import sys
 import time
+from urllib.parse import quote, unquote
 import uuid
 from zoneinfo import ZoneInfo
 
 import png
 from PIL import Image
 from libpebble2.communication import PebbleConnection
+from libpebble2.communication.transports.websocket import MessageTargetPhone
+from libpebble2.communication.transports.websocket.protocol import (
+    AppConfigSetup, AppConfigResponse, WebSocketPhonesimAppConfig,
+    WebSocketPhonesimConfigResponse, WebSocketPhoneAppLog,
+)
 from libpebble2.protocol.apps import AppRunState, AppRunStateStart, AppRunStateStop
 from libpebble2.protocol.system import TimeMessage, SetUTC
 from libpebble2.services.appmessage import AppMessageService, Int32
@@ -46,6 +52,8 @@ def main():
     platform, pbw_path = sys.argv[1:]
     sdk = '4.33.1'
     sdk_root = Path(sdk_manager.root_path_for_sdk(sdk))
+    sdk_header = sdk_root / 'sdk-core/pebble' / platform / 'include/pebble.h'
+    quiet_api_stub = '#define quiet_time_is_active(...) (false)' in sdk_header.read_text()
     os.environ['PATH'] = str(sdk_root / 'toolchain/bin') + os.pathsep + os.environ['PATH']
     target = dt.datetime(2026, 9, 11, 23, 22, tzinfo=ZoneInfo('Europe/Berlin'))
     out = Path('build/runtime')
@@ -54,6 +62,7 @@ def main():
     pebble = PebbleConnection(transport)
     failures = []
     acknowledgements = queue.Queue()
+    configuration_evidence = []
     messages = None
 
     def set_clock(local):
@@ -74,25 +83,102 @@ def main():
             try:
                 status, tid, app = acknowledgements.get(timeout=max(0.1, deadline-time.monotonic()))
             except queue.Empty:
-                raise AssertionError('No configuration acknowledgement') from None
+                raise AssertionError('No phone-battery AppMessage acknowledgement') from None
             if tid == transaction and app == WATCHFACE:
-                assert status == 'ack', 'Watchface rejected configuration'
+                assert status == 'ack', 'Watchface rejected phone-battery AppMessage'
                 return
-        raise AssertionError('No configuration acknowledgement')
+        raise AssertionError('No phone-battery AppMessage acknowledgement')
+
+    def open_config(timeout=15):
+        replies = queue.Queue()
+        handle = pebble.register_transport_endpoint(
+            MessageTargetPhone, WebSocketPhonesimConfigResponse, replies.put)
+        try:
+            # JS readiness is acknowledged before this call. Send one Setup
+            # only, so delayed callbacks cannot overlap a later save operation.
+            pebble.transport.send_packet(
+                WebSocketPhonesimAppConfig(config=AppConfigSetup()),
+                target=MessageTargetPhone())
+            try:
+                response = replies.get(timeout=timeout)
+            except queue.Empty:
+                raise AssertionError('Real JS did not open configuration before timeout') from None
+            url = response.config.data
+            if isinstance(url, bytes):
+                url = url.decode('utf-8')
+            assert url.startswith('data:text/html'), 'JS did not open its real configuration page'
+            return unquote(url.split(',', 1)[1])
+        finally:
+            pebble.unregister_endpoint(handle)
+
+    def observe_js_logs():
+        logs = queue.Queue()
+        handle = pebble.register_transport_endpoint(
+            MessageTargetPhone, WebSocketPhoneAppLog,
+            lambda message: logs.put(message.payload))
+        return logs, handle
+
+    def wait_js_config_ack(logs, flags=None):
+        prefix = 'Message sent successfully: {"KEY_CONFIG_VALUE":'
+        expected = prefix if flags is None else prefix + str(flags) + '}'
+        deadline = time.monotonic() + 15
+        while True:
+            remaining = deadline-time.monotonic()
+            if remaining <= 0:
+                raise AssertionError(f'No real JS AppMessage ACK for configuration {flags}')
+            try:
+                log = logs.get(timeout=remaining)
+            except queue.Empty:
+                raise AssertionError(f'No real JS AppMessage ACK for configuration {flags}') from None
+            if isinstance(log, bytes):
+                log = log.decode('utf-8', errors='replace')
+            if expected in log:
+                return
+            if 'Message failed:' in log:
+                raise AssertionError('Real JS AppMessage failed: ' + log)
+
+    def assert_saved_config(flags, phase):
+        html = open_config()
+        assert f'var INJECTED_CONFIG={flags};' in html, (
+            f'JS configuration was not preserved during {phase}: expected {flags}')
+        configuration_evidence.append({'phase': phase, 'flags': flags, 'reopened_page': True})
 
     def config(flags):
-        send({6: flags})
+        # Match the official emu-app-config lifecycle. Without Setup pypkjs
+        # has no callback and ignores the response. The real webviewclosed JS
+        # persists localStorage and sends key 6; a direct key 6 injection would
+        # be overwritten by its ready handler after an app restart.
+        open_config()
+        logs, handle = observe_js_logs()
+        try:
+            response = quote(json.dumps({'config': flags}, separators=(',', ':')), safe="~()*!.'-")
+            pebble.transport.send_packet(
+                WebSocketPhonesimAppConfig(config=AppConfigResponse(data=response)),
+                target=MessageTargetPhone())
+            wait_js_config_ack(logs, flags)
+            configuration_evidence.append({'phase': 'webviewclosed-ack', 'flags': flags})
+        finally:
+            pebble.unregister_endpoint(handle)
+        assert_saved_config(flags, 'after-save')
         settle()
 
     def run_app(app, start=True):
         command = AppRunStateStart(uuid=app) if start else AppRunStateStop(uuid=app)
         pebble.send_packet(AppRunState(data=command))
 
-    def restart():
+    def start_ready(flags):
+        logs, handle = observe_js_logs()
+        try:
+            run_app(WATCHFACE)
+            wait_js_config_ack(logs, flags)
+            configuration_evidence.append({'phase': 'ready-ack', 'flags': flags})
+        finally:
+            pebble.unregister_endpoint(handle)
+
+    def restart(flags):
         run_app(WATCHFACE, False)
         time.sleep(0.5)
-        run_app(WATCHFACE)
-        time.sleep(1)
+        start_ready(flags)
         settle()
 
     def capture(label, expected_local=None, flags=0):
@@ -122,16 +208,6 @@ def main():
         pebble.connect()
         pebble.run_async()
         time.sleep(5)
-        ToolAppInstaller(pebble, str(Path(pbw_path).resolve())).install()
-        messages = AppMessageService(pebble)
-        messages.register_handler('ack', lambda tid, app: acknowledgements.put(('ack', tid, app)))
-        messages.register_handler('nack', lambda tid, app: acknowledgements.put(('nack', tid, app)))
-        send_data_to_qemu(pebble.transport, QemuBattery(percent=73, charging=False))
-        send_data_to_qemu(pebble.transport, QemuBluetoothConnection(connected=True))
-        send_data_to_qemu(pebble.transport, QemuTimeFormat(is_24_hour=True))
-        config(0)
-        send({8: 0x70})
-        settle()
         firmware_image = sdk_root / 'sdk-core/pebble' / platform / 'qemu/qemu_micro_flash.bin'
         metadata = {
             'platform': platform, 'sdk': sdk,
@@ -141,26 +217,48 @@ def main():
             'pbw_sha256': hashlib.sha256(Path(pbw_path).read_bytes()).hexdigest(),
             'target_local': target.isoformat(),
             'timezone_scope': 'Fixed UTC+2 for this date; host tests cover DST rules',
+            'quiet_time_api': 'constant false SDK macro' if quiet_api_stub else 'firmware API',
+            'sdk_header_sha256': hashlib.sha256(sdk_header.read_bytes()).hexdigest(),
         }
         (out / f'{platform}.json').write_text(json.dumps(metadata, indent=2))
+        logs, handle = observe_js_logs()
+        try:
+            ToolAppInstaller(pebble, str(Path(pbw_path).resolve())).install()
+            # Subscribe before install: ready can fire before install returns.
+            # Its acknowledged config also proves that AppSync accepts messages.
+            wait_js_config_ack(logs)
+        finally:
+            pebble.unregister_endpoint(handle)
+        messages = AppMessageService(pebble)
+        messages.register_handler('ack', lambda tid, app: acknowledgements.put(('ack', tid, app)))
+        messages.register_handler('nack', lambda tid, app: acknowledgements.put(('nack', tid, app)))
+        send_data_to_qemu(pebble.transport, QemuBattery(percent=73, charging=False))
+        send_data_to_qemu(pebble.transport, QemuBluetoothConnection(connected=True))
+        send_data_to_qemu(pebble.transport, QemuTimeFormat(is_24_hour=True))
+        config(0)
+        send({8: 0x70})
+        settle()
         capture('friday', target)
         for flags, label in ((16, 'sunday'), (0, 'monday')):
             config(flags)
             capture(label, target, flags)
-            restart()
+            restart(flags)
+            assert_saved_config(flags, 'after-restart')
             capture(label + '-restart', target, flags)
 
         # Real OS quiet-time toggle, documented in PebbleOS system/toggle/quiet_time.
         baseline = capture('quiet-before')
-        if not visible(baseline, 'quiet'):
+        if not quiet_api_stub and not visible(baseline, 'quiet'):
             run_app(QUIET_TOGGLE)
             time.sleep(2.5)
-            run_app(WATCHFACE)
-            time.sleep(1.2)
+            start_ready(0)
             settle()
         enabled = capture('options-enabled', target)
         for region in REGIONS:
-            require(visible(enabled, region), region + ' must be visible when enabled')
+            if region == 'quiet' and quiet_api_stub:
+                require(not visible(enabled, region), 'SDK constant-false Quiet Time must remain absent')
+            else:
+                require(visible(enabled, region), region + ' must be visible when enabled')
         for flag, region in ((1, 'seconds'), (2, 'frame'), (4, 'battery'),
                              (8, 'connection'), (32, 'quiet'), (64, 'week')):
             config(flag)
@@ -168,7 +266,10 @@ def main():
             require(not visible(hidden, region), region + ' must disappear after configuration')
             config(0)
             shown = capture('shown-' + region, target)
-            require(visible(shown, region), region + ' must return after configuration')
+            if region == 'quiet' and quiet_api_stub:
+                require(not visible(shown, region), 'Quiet Time option must preserve unsupported SDK behavior')
+            else:
+                require(visible(shown, region), region + ' must return after configuration')
 
         # Exercise the phone-battery alternative of the same existing option.
         send({8: 73})
@@ -189,12 +290,24 @@ def main():
         (out / f'{platform}-results.json').write_text(json.dumps({'failures': failures}, indent=2))
         assert not failures, '\n'.join(failures)
         print(f'{platform}: real PBW calendar, configuration, options, restart and midnight verified')
+    except Exception as error:
+        diagnostics = {'failures': failures, 'exception': str(error)}
+        try:
+            capture('failure')
+        except Exception as screenshot_error:
+            diagnostics['screenshot_exception'] = str(screenshot_error)
+        (out / f'{platform}-results.json').write_text(json.dumps(diagnostics, indent=2))
+        raise
     finally:
-        if messages is not None:
-            messages.shutdown()
-        if getattr(transport, 'ws', None):
-            transport.ws.close()
-        subprocess.run(['pebble', 'kill'], check=False)
+        try:
+            (out / f'{platform}-configuration.json').write_text(
+                json.dumps(configuration_evidence, indent=2))
+        finally:
+            if messages is not None:
+                messages.shutdown()
+            if getattr(transport, 'ws', None):
+                transport.ws.close()
+            subprocess.run(['pebble', 'kill'], check=False)
 
 
 if __name__ == '__main__':
