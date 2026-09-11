@@ -1,0 +1,95 @@
+name: Calendar contract
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'resources/**'
+      - 'tests/**'
+      - 'docs/contracts/**'
+      - 'appinfo.json'
+      - 'wscript'
+      - '.github/workflows/calendar.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'resources/**'
+      - 'tests/**'
+      - 'docs/contracts/**'
+      - 'appinfo.json'
+      - 'wscript'
+      - '.github/workflows/calendar.yml'
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  calendar:
+    # Personal TensorChris repository has no self-hosted runners (verified via API).
+    # Ubuntu provides a reproducible Pebble toolchain without changing the Mac.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify frozen contract and tests
+        run: python tests/verify_frozen.py --candidate
+      - name: Install test dependencies
+        run: python -m pip install -r tests/requirements.txt
+      - name: Contract tests against real C renderer
+        id: host
+        continue-on-error: true
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: calendar-rendering
+          path: build/contract-tests/reported-*.png
+          if-no-files-found: error
+      - name: Install Pebble build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-2.0-0 libglib2.0-0 libpixman-1-0 zlib1g libsndio7.0
+          python -m pip install 'pebble-tool==5.0.40' 'sh==2.2.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned SDK
+        run: pebble sdk install 4.33.1
+      - name: Build aplite, basalt and diorite
+        run: pebble build
+      - name: Check installable bundle
+        run: python tests/verify_bundle.py
+      - name: Real PBW and midnight tick in headless emulators
+        id: runtime
+        continue-on-error: true
+        run: |
+          PBW=$(find build -maxdepth 1 -name '*.pbw' -print -quit)
+          for platform in aplite basalt diorite; do
+            python tests/runtime_probe.py "$platform" "$PBW"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pebble-runtime
+          path: build/runtime/
+          if-no-files-found: warn
+      - name: Require all contract checks
+        if: always()
+        env:
+          HOST_RESULT: ${{ steps.host.outcome }}
+          RUNTIME_RESULT: ${{ steps.runtime.outcome }}
+        run: |
+          test "$HOST_RESULT" = success
+          test "$RUNTIME_RESULT" = success
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pebble-watchface
+          path: build/*.pbw
+          if-no-files-found: error
