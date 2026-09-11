@@ -100,8 +100,13 @@ Kalenderwochenregeln an Jahresgrenzen eingeführt.
 lokalen Headless-Emulatoren für aplite, basalt und diorite. In einer einzigen
 Verbindung setzt es 11.09.2026 23:22 UTC+2 und vergleicht die vollständigen
 Header-/Kalenderpixel mit dem unabhängig datumsgeprüften Hostrenderer. Anschließend
-setzt es 23:59:59, lässt die echte Firmware über Mitternacht laufen und prüft
-00:00. Damit werden auch `main.c`, SDK-Verlinkung und der echte Minuten-Tick geprüft.
+setzt es 23:59:45 vor der echten Konfigurationsübertragung und damit vor der
+Tick-Anmeldung. Ein Screenshot prüft zunächst den Zustand vor Mitternacht;
+danach läuft die echte Firmware ohne weitere Zeitkorrektur, Konfiguration oder
+Neustart über Mitternacht und muss 00:00 darstellen. Damit werden auch `main.c`,
+SDK-Verlinkung und der echte Minuten-Tick geprüft. Ein Zeitsprung nach der
+Tick-Anmeldung würde zusätzlich das Nachplanen des Firmware-Timers testen und
+ist nicht Teil dieses normalen Tageswechselnachweises.
 Firmwareversion, Firmware-/PBW-Prüfsummen und Screenshots werden als CI-Artefakte
 gesichert. Der Emulatorfall verwendet den korrekten festen Offset dieses Tages;
 Sommerzeitregeln werden separat in den Hostfällen geprüft.
@@ -131,6 +136,9 @@ gespeicherten Wochenbeginn in den Kalenderpixeln und in der erneut geöffneten
 Konfigurationsseite, ohne eine neue Konfiguration zu senden. Die Bestätigungen
 werden als separates CI-Artefakt protokolliert. Jede vorhandene Anzeigeoption wird sichtbar
 an/aus geschaltet; Quiet Time wird über die echte System-Toggle-App aktiviert,
+danach stellt ein ausdrücklicher Stop/Start eine frische Watchface- und JS-Instanz
+her. Ein bloßes Start-Kommando nach der automatischen Rückkehr der System-App
+würde keinen neuen `ready`-Rückruf erzeugen.
 Uhrenbatterie und Bluetooth werden über die QEMU-Gerätezustände bereitgestellt.
 Ein zusätzlicher Mitternachtslauf prüft den reinen Minutenmodus (Sekunden und
 Rahmen aus). Die Handy-Konfigurationswebseite selbst ist nicht verändert und

@@ -4,6 +4,7 @@ on:
     paths:
       - 'src/**'
       - 'resources/**'
+      - 'releases/*.pbw'
       - 'tests/**'
       - 'docs/contracts/**'
       - 'appinfo.json'
@@ -14,6 +15,7 @@ on:
     paths:
       - 'src/**'
       - 'resources/**'
+      - 'releases/*.pbw'
       - 'tests/**'
       - 'docs/contracts/**'
       - 'appinfo.json'

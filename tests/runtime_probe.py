@@ -143,7 +143,7 @@ def main():
             f'JS configuration was not preserved during {phase}: expected {flags}')
         configuration_evidence.append({'phase': phase, 'flags': flags, 'reopened_page': True})
 
-    def config(flags):
+    def config(flags, reset_clock=True):
         # Match the official emu-app-config lifecycle. Without Setup pypkjs
         # has no callback and ignores the response. The real webviewclosed JS
         # persists localStorage and sends key 6; a direct key 6 injection would
@@ -160,7 +160,8 @@ def main():
         finally:
             pebble.unregister_endpoint(handle)
         assert_saved_config(flags, 'after-save')
-        settle()
+        if reset_clock:
+            settle()
 
     def run_app(app, start=True):
         command = AppRunStateStart(uuid=app) if start else AppRunStateStop(uuid=app)
@@ -251,8 +252,9 @@ def main():
         if not quiet_api_stub and not visible(baseline, 'quiet'):
             run_app(QUIET_TOGGLE)
             time.sleep(2.5)
-            start_ready(0)
-            settle()
+            # The system toggle can already have returned to this watchface.
+            # Starting an already running app produces no new JS ready event.
+            restart(0)
         enabled = capture('options-enabled', target)
         for region in REGIONS:
             if region == 'quiet' and quiet_api_stub:
@@ -282,11 +284,30 @@ def main():
 
         # Verify the native minute callback with both regular tick configurations.
         for flags, label in ((0, 'seconds-on'), (3, 'minute-only')):
-            config(flags)
-            before_midnight = target.replace(hour=23, minute=59, second=59)
+            # Force a real option change below even when this mode was already
+            # active; AppSync need not notify for an unchanged value.
+            config(flags ^ 3)
+            # Set time before apply_config subscribes its native tick timer.
+            # A later clock jump would test firmware timer rescheduling instead
+            # of the watchface's behavior at an ordinary midnight boundary.
+            before_midnight = target.replace(hour=23, minute=59, second=45)
             set_clock(before_midnight)
-            time.sleep(2)
-            capture('midnight-' + label, before_midnight + dt.timedelta(seconds=1), flags)
+            clock_started = time.monotonic()
+            time.sleep(0.35)
+            config(flags, reset_clock=False)
+            capture('before-midnight-' + label, before_midnight, flags)
+            setup_elapsed = time.monotonic() - clock_started
+            assert setup_elapsed < 15, 'Midnight test setup did not finish before the day boundary'
+            configuration_evidence.append({
+                'phase': 'native-midnight', 'flags': flags,
+                'initial_local': before_midnight.isoformat(),
+                'setup_elapsed_seconds': setup_elapsed,
+                'clock_updates_after_subscription': 0,
+            })
+            # No configuration, redraw, restart or clock update after this point:
+            # the real firmware must deliver the day-changing tick itself.
+            time.sleep(max(0, 17 - setup_elapsed))
+            capture('midnight-' + label, before_midnight + dt.timedelta(seconds=15), flags)
         (out / f'{platform}-results.json').write_text(json.dumps({'failures': failures}, indent=2))
         assert not failures, '\n'.join(failures)
         print(f'{platform}: real PBW calendar, configuration, options, restart and midnight verified')

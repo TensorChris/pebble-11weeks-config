@@ -32,7 +32,7 @@ Hosttest ersetzt diese ergänzenden Nachweise nicht.
 | Anforderung | Ergänzender automatisierter Nachweis |
 |---|---|
 | KAL-01: reale Freitagsspalte | `runtime_probe.py`: echte PBW-Screenshots aller drei Emulatoren um23:22, vollständiger Kalender-/Headerpixelvergleich |
-| KAL-04: echter Tageswechsel spätestens nächste Minute | `runtime_probe.py`: Firmware von23:59:59 über00:00 laufen lassen, Bildschirm mit Folgetag vergleichen |
+| KAL-04: echter Tageswechsel spätestens nächste Minute | `runtime_probe.py`: Uhr vor Tick-Anmeldung auf23:59:45 setzen, Vorherbild prüfen, anschließend ohne weitere Uhr-/Konfigurationseingriffe über00:00 laufen lassen und Bildschirm mit Folgetag vergleichen |
 | KAL-05: unterstützte Plattformen und bestehende Darstellung | SDK baut alle drei ARM-Binärdateien; `runtime_probe.py` prüft reale Kalender-/Headerpixel |
 | KAL-06: installierbare PBW | `verify_bundle.py` und erfolgreicher Installationsvorgang in `runtime_probe.py` |
 | KAL-06: unveränderter Vertrag und Tests | `verify_frozen.py`, historisches Testmanifest und Freigabecommit; CI-Abschlussgate |
