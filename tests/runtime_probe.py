@@ -37,7 +37,6 @@ from pebble_tool.sdk.emulator import ManagedEmulatorTransport
 from test_calendar import render
 
 WATCHFACE = uuid.UUID('8ae4dd92-b5fa-42fa-aca9-d326dfad417f')
-QUIET_TOGGLE = uuid.UUID('2220d805-cf9a-4e12-92b9-5ca778aff6bb')
 REGIONS = {
     'seconds': (23, 153, 120, 158),
     'frame': (0, 0, 144, 3),
@@ -219,6 +218,8 @@ def main():
             'target_local': target.isoformat(),
             'timezone_scope': 'Fixed UTC+2 for this date; host tests cover DST rules',
             'quiet_time_api': 'constant false SDK macro' if quiet_api_stub else 'firmware API',
+            'quiet_time_control': 'SDK shell has no toggle app or button handler; native OFF only',
+            'quiet_time_on_evidence': 'Host executes original main.c callbacks and quiet_time_layer.c with controlled OS state',
             'sdk_header_sha256': hashlib.sha256(sdk_header.read_bytes()).hexdigest(),
         }
         (out / f'{platform}.json').write_text(json.dumps(metadata, indent=2))
@@ -247,18 +248,15 @@ def main():
             assert_saved_config(flags, 'after-restart')
             capture(label + '-restart', target, flags)
 
-        # Real OS quiet-time toggle, documented in PebbleOS system/toggle/quiet_time.
-        baseline = capture('quiet-before')
-        if not quiet_api_stub and not visible(baseline, 'quiet'):
-            run_app(QUIET_TOGGLE)
-            time.sleep(2.5)
-            # The system toggle can already have returned to this watchface.
-            # Starting an already running app produces no new JS ready event.
-            restart(0)
+        # The pinned SDK shell has no Settings/Quiet-Time toggle app or button
+        # handler. Preserve its OFF state here; the host integration test runs
+        # the exact main.c callbacks and real quiet layer with controlled ON/OFF.
+        # https://github.com/coredevices/PebbleOS/blob/3b927684809fba173ee54029bdb32c6ae21611b5/src/fw/shell/sdk/system_app_registry_list.json
+        require(not visible(capture('quiet-before'), 'quiet'), 'SDK Quiet Time must initially be off')
         enabled = capture('options-enabled', target)
         for region in REGIONS:
-            if region == 'quiet' and quiet_api_stub:
-                require(not visible(enabled, region), 'SDK constant-false Quiet Time must remain absent')
+            if region == 'quiet':
+                require(not visible(enabled, region), 'SDK Quiet Time must remain absent while OS state is off')
             else:
                 require(visible(enabled, region), region + ' must be visible when enabled')
         for flag, region in ((1, 'seconds'), (2, 'frame'), (4, 'battery'),
@@ -268,8 +266,8 @@ def main():
             require(not visible(hidden, region), region + ' must disappear after configuration')
             config(0)
             shown = capture('shown-' + region, target)
-            if region == 'quiet' and quiet_api_stub:
-                require(not visible(shown, region), 'Quiet Time option must preserve unsupported SDK behavior')
+            if region == 'quiet':
+                require(not visible(shown, region), 'Quiet Time option must preserve the SDK OS-off state')
             else:
                 require(visible(shown, region), region + ' must return after configuration')
 

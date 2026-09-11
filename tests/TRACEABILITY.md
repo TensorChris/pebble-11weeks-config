@@ -31,8 +31,8 @@ Hosttest ersetzt diese ergänzenden Nachweise nicht.
 
 | Anforderung | Ergänzender automatisierter Nachweis |
 |---|---|
-| KAL-01: reale Freitagsspalte | `runtime_probe.py`: echte PBW-Screenshots aller drei Emulatoren um23:22, vollständiger Kalender-/Headerpixelvergleich |
-| KAL-04: echter Tageswechsel spätestens nächste Minute | `runtime_probe.py`: Uhr vor Tick-Anmeldung auf23:59:45 setzen, Vorherbild prüfen, anschließend ohne weitere Uhr-/Konfigurationseingriffe über00:00 laufen lassen und Bildschirm mit Folgetag vergleichen |
+| KAL-01: reale Freitagsspalte | `runtime_probe.py`: echte PBW-Screenshots aller drei Emulatoren um 23:22, vollständiger Kalender-/Headerpixelvergleich |
+| KAL-04: echter Tageswechsel spätestens nächste Minute | `runtime_probe.py`: Uhr vor Tick-Anmeldung auf 23:59:45 setzen, Vorherbild prüfen, anschließend ohne weitere Uhr-/Konfigurationseingriffe über 00:00 laufen lassen und Bildschirm mit Folgetag vergleichen |
 | KAL-05: unterstützte Plattformen und bestehende Darstellung | SDK baut alle drei ARM-Binärdateien; `runtime_probe.py` prüft reale Kalender-/Headerpixel |
 | KAL-06: installierbare PBW | `verify_bundle.py` und erfolgreicher Installationsvorgang in `runtime_probe.py` |
 | KAL-06: unveränderter Vertrag und Tests | `verify_frozen.py`, historisches Testmanifest und Freigabecommit; CI-Abschlussgate |
@@ -43,7 +43,24 @@ Hosttest ersetzt diese ergänzenden Nachweise nicht.
 | Anforderung | Zusätzlicher Nachweis |
 |---|---|
 | KAL-03 | `runtime_probe.py`: echter `showConfiguration`-/`webviewclosed`-Pfad, Produkt-JS speichert localStorage und bestätigt Watch-ACK; Sonntag/Montag, echte Stop-/Start-Nachrichten ohne erneute Konfiguration, Kalenderpixel und erneut geöffnete JS-Konfigurationsseite nach Neustart |
-| KAL-05: Anzeigeoptionen | `runtime_probe.py`: sichtbare/ausgeblendete Sekunden, Rahmen, Uhrenbatterie, Bluetooth und Handybatterie, OS-Quiet-Time-Mond auf basalt/diorite und KW-Ziffern; aplite bewahrt die im SDK als konstant false definierte Quiet-Time-API bei beiden Optionszuständen. Speichern durch echte JS-Konfigurationsereignisse und AppMessage/AppSync, direkte Nachrichten nur für Handy-Batteriewerte |
+| KAL-05: Anzeigeoptionen | `runtime_probe.py`: sichtbare/ausgeblendete Sekunden, Rahmen, Uhrenbatterie, Bluetooth und Handybatterie, Quiet-Time-Option bei nativem OS-OFF und KW-Ziffern; der ergänzende Hosttest prüft die echten ON-Pixel und Hauptfunktions-Verdrahtung. aplite bewahrt die im SDK als konstant false definierte Quiet-Time-API bei beiden Optionszuständen. Speichern durch echte JS-Konfigurationsereignisse und AppMessage/AppSync, direkte Nachrichten nur für Handy-Batteriewerte |
 | KAL-04: Minutenmodus | Echter Mitternachts-Tick zusätzlich bei ausgeschalteten Sekunden und Rahmen |
-| KAL-05: vorhandene Pixelgrafiken | `test_KAL_05_original_pixel_artwork_is_preserved`: eingefrorene RGBA-Pixelprüfsummen aus Ausgangscommit33ffcf9, unabhängig von den aktuell geladenen Produktressourcen |
+| KAL-05: vorhandene Pixelgrafiken | `test_KAL_05_original_pixel_artwork_is_preserved`: eingefrorene RGBA-Pixelprüfsummen aus Ausgangscommit 33ffcf9, unabhängig von den aktuell geladenen Produktressourcen |
 | KAL-06: unabhängiger Freeze-Prüfpfad | Workflow lädt nach dem ersten Freeze den Verifier aus genau diesem historischen Commit statt aus dem Kandidatencheckout |
+
+
+## Ergänzender sichtbarer Quiet-Time-Nachweis für KAL-05
+
+`test_KAL_05_quiet_time_callbacks_visible_pixels_and_option` prüft die vorhandene
+Quiet-Time-Option über echte, unverändert extrahierte `main.c`-Funktionskörper:
+`apply_config` registriert den Timer und setzt `layer_set_hidden`; der
+registrierte `tick_handler` fragt den kontrollierten OS-Zustand ab und ruft
+`quiet_time_layer_update` der echten Produkt-Ebene auf. Die originalen Iconpixel,
+deren Position und das Ausblenden/Wiederanzeigen werden vollständig im
+Framebuffer geprüft. Abfolge: aktiv → ausgeblendet → sichtbar → inaktiv → aktiv.
+
+Dieser Hostnachweis ergänzt die native Probe, deren SDK-Shell die Quiet-Toggle-
+App nicht bereitstellt. Der injizierte ON-Zustand im aplite-Hostlauf dient nur
+der Prüfung des vorhandenen BW-Renderers und verspricht keine zusätzliche
+OS-Fähigkeit auf aplite. Die unveränderten Bildreferenzen stammen weiterhin
+ausschließlich aus `reference-images.json` (Ausgangscommit 33ffcf9).

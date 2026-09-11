@@ -3,6 +3,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 import shlex
 from pathlib import Path
 import subprocess
@@ -16,7 +17,30 @@ BUILD = ROOT / 'build' / 'contract-tests'
 SHA = '3765d401a3861c90a4dce1d5f94c5ce27764bf9e140deaa9e8a2a25ae19c2e8e'
 PLATFORMS = {'aplite': 'PBL_BW', 'basalt': 'PBL_COLOR', 'diorite': 'PBL_BW'}
 MODELS = ('original', 'current')
-ASSETS = ('background.png', 'number_3x5.png', 'big_number_3x5.png', 'cap_letters.png')
+ASSETS = ('background.png', 'number_3x5.png', 'big_number_3x5.png', 'cap_letters.png', 'quiet_time_icon.png')
+
+
+def extract_quiet_callbacks():
+    """Copy whole current product functions verbatim; never reproduce their logic."""
+    path = ROOT / 'src/main.c'
+    source = path.read_text()
+    functions = []
+    for name in ('apply_config', 'tick_handler', 'update_time'):
+        matches = list(re.finditer(r'^static void ' + name + r'\([^;]*?\)\s*\{', source, re.M))
+        if len(matches) != 1:
+            raise AssertionError(f'Expected exactly one product callback {name}, found {len(matches)}')
+        match = matches[0]
+        start, cursor, depth = match.start(), match.end(), 1
+        # These exact callback bodies contain no braces in strings/comments.
+        # Preserve every byte and include the original source location.
+        while depth:
+            if cursor >= len(source):
+                raise AssertionError(f'Unbalanced callback {name}')
+            depth += (source[cursor] == '{') - (source[cursor] == '}')
+            cursor += 1
+        line = source[:start].count('\n') + 1
+        functions.append(f'#line {line} "{path}"\n' + source[start:cursor])
+    (BUILD / 'quiet_main_functions.h').write_text('\n\n'.join(functions) + '\n')
 
 
 def prepare():
@@ -31,6 +55,7 @@ def prepare():
         sizes.append(f'{{{im.width},{im.height},asset_{i}}}')
     definitions.append('static const Asset assets[]={' + ','.join(sizes) + '};')
     (BUILD / 'assets.h').write_text('\n'.join(definitions))
+    extract_quiet_callbacks()
     # Include later feature-local calendar modules without adding product skeletons.
     sources = sorted((ROOT / 'src').glob('calendar*.c')) + [ROOT / 'src' / f for f in ('numbers.c', 'letters.c', 'config.c')]
     for platform, mode in PLATFORMS.items():
@@ -38,6 +63,15 @@ def prepare():
                         f'-DPBL_PLATFORM_{platform.upper()}', '-Wall', '-Wextra', '-Wno-unused-parameter',
                         '-I'+str(ROOT/'tests/host'), '-I'+str(ROOT/'src'), '-I'+str(BUILD),
                         str(ROOT/'tests/host/runtime.c'), *map(str, sources), '-o', str(BUILD/platform)], check=True, capture_output=True)
+        subprocess.run([os.environ.get('CC','cc'), *shlex.split(os.environ.get('CFLAGS','')),
+                        '-std=c11', '-D_DEFAULT_SOURCE', '-D_DARWIN_C_SOURCE', '-DNOLOG',
+                        f'-D{mode}', f'-DPBL_PLATFORM_{platform.upper()}', '-DHOST_LIBRARY',
+                        '-Wall', '-Wextra', '-Wno-unused-parameter',
+                        '-I'+str(ROOT/'tests/host'), '-I'+str(ROOT/'src'), '-I'+str(BUILD),
+                        str(ROOT/'tests/host/runtime.c'), str(ROOT/'tests/host/quiet_runtime.c'),
+                        str(ROOT/'src/quiet_time_layer.c'), *map(str, sources),
+                        '-o', str(BUILD/f'quiet-{platform}')], check=True, capture_output=True)
+
 
 
 def dates_for(today, monday=True):
@@ -132,6 +166,39 @@ class CalendarContract(unittest.TestCase):
                 image = Image.open(ROOT / name).convert('RGBA')
                 self.assertEqual(image.size, (reference['width'], reference['height']))
                 self.assertEqual(hashlib.sha256(image.tobytes()).hexdigest(), reference['rgba_sha256'])
+
+    def test_KAL_05_quiet_time_callbacks_visible_pixels_and_option(self):
+        reference = json.loads((ROOT / 'tests/reference-images.json').read_text())['resources/images/quiet_time_icon.png']
+        icon = Image.open(ROOT / 'resources/images/quiet_time_icon.png').convert('RGBA')
+        self.assertEqual(hashlib.sha256(icon.tobytes()).hexdigest(), reference['rgba_sha256'])
+        self.assertEqual(icon.size, (reference['width'], reference['height']))
+        # Existing pixel layout is the preserved KAL-05 behavior, not a new design.
+        self.assertEqual(icon.size, (8, 10))
+        expected = Image.new('L', (144, 168), 0)
+        expected.paste(icon.convert('L').point(lambda value: 255 if value > 127 else 0), (8, 136))
+        blank = Image.new('L', (144, 168), 0)
+        for platform in PLATFORMS:
+            with self.subTest(platform=platform):
+                directory = Path(tempfile.mkdtemp(prefix=f'quiet-{platform}-', dir=BUILD))
+                output = subprocess.run([str(BUILD/f'quiet-{platform}'), str(directory)],
+                                        check=True, capture_output=True, text=True)
+                (directory/'trace.txt').write_text(output.stdout)
+                frames = output.stdout.split('FRAME ')[1:]
+                self.assertEqual(len(frames), 5)
+                for index, (active, hidden, visible) in enumerate(((1,0,True),(1,1,False),(1,0,True),(0,0,False),(1,0,True))):
+                    with self.subTest(frame=index):
+                        lines = frames[index].splitlines()[1:]
+                        status = [line for line in lines if line.startswith('QUIET ')]
+                        self.assertEqual(len(status), 1)
+                        _, actual_active, actual_hidden, reads, units = status[0].split()
+                        self.assertEqual((int(actual_active), int(actual_hidden), int(units)), (active, hidden, 2))
+                        if not hidden:
+                            self.assertGreaterEqual(int(reads), 1, 'Visible layer must observe the OS state')
+                        draws = [line for line in lines if line.startswith('BITMAP ')]
+                        self.assertEqual(draws, ['BITMAP 5 0 0 8 136 8 10'] if visible else [])
+                        actual = Image.open(directory/f'frame-{index}.pgm')
+                        self.assertEqual(actual.tobytes(), (expected if visible else blank).tobytes())
+                Image.open(directory/'frame-0.pgm').save(BUILD/f'quiet-active-{platform}.png')
 
     def test_KAL_01_reported_friday_and_week_37(self):
         for platform in PLATFORMS:

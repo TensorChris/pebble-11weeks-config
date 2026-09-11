@@ -115,6 +115,8 @@ void graphics_context_set_fill_color(GContext *context, int color) { context->fi
 void graphics_context_set_stroke_color(GContext *context, int color) { context->stroke = color; }
 
 void graphics_draw_bitmap_in_rect(GContext *context, GBitmap *bitmap, GRect rect) {
+  rect.origin.x += context->tx;
+  rect.origin.y += context->ty;
   printf("BITMAP %d %d %d %d %d %d %d\n", bitmap->id, bitmap->ox, bitmap->oy,
          rect.origin.x, rect.origin.y, rect.size.w, rect.size.h);
   for (int y = 0; y < rect.size.h; y++) {
@@ -157,6 +159,25 @@ Layer *layer_create(GRect rect) {
   return layer;
 }
 void layer_destroy(Layer *layer) { free(layer); }
+void layer_set_hidden(Layer *layer, bool hidden) { layer->hidden = hidden; }
+void layer_mark_dirty(Layer *layer) { layer->dirty = true; }
+void host_draw_layer(Layer *layer, GContext *context) {
+  if (layer->hidden || !layer->dirty) return;
+  context->tx = layer->bounds.origin.x;
+  context->ty = layer->bounds.origin.y;
+  layer->draw(layer, context);
+  context->tx = context->ty = 0;
+  layer->dirty = false;
+}
+void host_write_frame(GContext *context, const char *path) {
+  FILE *file = fopen(path, "wb");
+  if (!file) exit(4);
+  fprintf(file, "P5\n144 168\n255\n");
+  for (int y = 0; y < 168; y++) {
+    for (int x = 0; x < 144; x++) fputc(pixel(&context->frame, x, y) ? 255 : 0, file);
+  }
+  fclose(file);
+}
 void layer_set_update_proc(Layer *layer, void (*draw)(Layer *, GContext *)) {
   layer->draw = draw;
 }
@@ -204,6 +225,7 @@ int32_t persist_read_int(uint32_t key) {
   return value;
 }
 
+#ifndef HOST_LIBRARY
 int main(int argc, char **argv) {
   if (argc != 8) return 2;
   snprintf(persist_path, sizeof(persist_path), "%s/config.bin", argv[1]);
@@ -266,3 +288,5 @@ int main(int argc, char **argv) {
   free(context.frame.data);
   return 0;
 }
+
+#endif

@@ -13,8 +13,8 @@ typedef struct {GPoint origin; GSize size;} GRect;
 #define GRect(x,y,w,h) ((GRect){{x,y},{w,h}})
 typedef int GBitmapFormat;
 typedef struct GBitmap {uint8_t *data; int w,h,stride,ox,oy,id; bool owns,mono;} GBitmap;
-typedef struct {GBitmap frame; int op,fill,stroke;} GContext;
-typedef struct Layer {GRect bounds; void (*draw)(struct Layer*,GContext*);} Layer;
+typedef struct {GBitmap frame; int op,fill,stroke,tx,ty;} GContext;
+typedef struct Layer {GRect bounds; bool hidden,dirty; void (*draw)(struct Layer*,GContext*);} Layer;
 typedef struct {int num_points; GPoint *points;} GPathInfo;
 typedef struct {GPoint origin; int angle;} GPath;
 #define GCompOpAssign 0
@@ -29,6 +29,7 @@ typedef struct {GPoint origin; int angle;} GPath;
 #define RESOURCE_ID_IMAGE_NUMBER_3X5 2
 #define RESOURCE_ID_IMAGE_BIG_NUMBER_3X5 3
 #define RESOURCE_ID_IMAGE_CAP_LETTERS_3X5 4
+#define RESOURCE_ID_IMAGE_QUIET_TIME 5
 GBitmap *gbitmap_create_with_resource(int);
 GBitmap *gbitmap_create_as_sub_bitmap(GBitmap*,GRect);
 void gbitmap_destroy(GBitmap*);
@@ -47,6 +48,10 @@ void graphics_draw_rect(GContext*,GRect);
 void graphics_fill_rect(GContext*,GRect,int,int);
 Layer *layer_create(GRect);
 void layer_destroy(Layer*);
+void layer_set_hidden(Layer*,bool);
+void layer_mark_dirty(Layer*);
+void host_draw_layer(Layer*,GContext*);
+void host_write_frame(GContext*,const char*);
 void layer_set_update_proc(Layer*,void (*)(Layer*,GContext*));
 GPath *gpath_create(const GPathInfo*);
 void gpath_destroy(GPath*);
