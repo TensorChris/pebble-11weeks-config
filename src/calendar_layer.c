@@ -1,13 +1,12 @@
 #include "necessary.h"
 #include "calendar_layer.h"
+#include "calendar_date.h"
 #include "const.h"
 #include "numbers.h"
 #include "letters.h"
 #include "config.h"
   
 typedef uint8_t buffer_t;
-
-#define MIN_END_MON   28  // min days in a month
 
 static const GPathInfo RARROW_PATH_INFO = {
   .num_points = 3,
@@ -229,51 +228,28 @@ static void calendar_layer_draw_dates(GContext* ctx) {
   // update background buffer
   update_bg_buffer(ctx);
 
-  // at least 1 previous weeks
-  time_t t = *s_now_t - 604800;        // 3600 * 24 * 7
-  struct tm* st = localtime(&t);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "1 week before:  %04d-%02d-%02d %02d:%02d:%02d w=%d yd=%d gmtoff=%d", st->tm_year, st->tm_mon, st->tm_mday, st->tm_hour, st->tm_min, st->tm_sec, st->tm_wday, st->tm_yday, st->tm_gmtoff);
-
-  // Calculate offset to the start of the week
-  int offset_to_week_start;
-  if (week_starts_monday()) {
-    // Monday = 1, so if tm_wday=0 (Sunday), offset = 6
-    // if tm_wday=1 (Monday), offset = 0
-    // if tm_wday=2 (Tuesday), offset = 1
-    offset_to_week_start = (st->tm_wday == 0) ? 6 : (st->tm_wday - 1);
-  } else {
-    // Sunday = 0, so offset = tm_wday
-    offset_to_week_start = st->tm_wday;
-  }
-
-  // Go back to the first day we want to display
-  for (st->tm_mday -= offset_to_week_start; st->tm_mday > 1; st->tm_mday -= 7);
-
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "1st day of cal: %04d-%02d-%02d %02d:%02d:%02d w=%d yd=%d gmtoff=%d (before mk)", st->tm_year, st->tm_mon, st->tm_mday, st->tm_hour, st->tm_min, st->tm_sec, st->tm_wday, st->tm_yday, st->tm_gmtoff);
-  // remove timezone information to make mktime work with local time well.
-  st->tm_gmtoff = 0;
-  mktime(st);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "1st day of cal: %04d-%02d-%02d %02d:%02d:%02d w=%d yd=%d gmtoff=%d", st->tm_year, st->tm_mon, st->tm_mday, st->tm_hour, st->tm_min, st->tm_sec, st->tm_wday, st->tm_yday, st->tm_gmtoff);
+  // Work only with local calendar fields. Firmware mktime normalization can
+  // otherwise move a late-evening date into the next day when offsets change.
+  CalendarDate today = {s_now->tm_year + 1900, s_now->tm_mon + 1,
+                        s_now->tm_mday, s_now->tm_wday};
+  CalendarDate date = calendar_date_start(today, week_starts_monday());
 
   for (int week = 0; week < WN; week++) {
     bool include_today = false;
     for (int wday = 0; wday < DW; wday++) {
-      bool is_today = st->tm_mon == s_now->tm_mon && st->tm_mday == s_now->tm_mday && st->tm_year == s_now->tm_year;
-      calendar_layer_draw_date(ctx, wday, week, st->tm_mday, is_today);
-      st->tm_mday++;
-      if (st->tm_mday >= MIN_END_MON) {
-        mktime(st);
-      }
+      bool is_today = date.month == today.month && date.day == today.day && date.year == today.year;
+      calendar_layer_draw_date(ctx, wday, week, date.day, is_today);
+      calendar_date_next(&date);
       include_today = include_today || is_today;
     }
 
-    bool need_display_mon = st->tm_mday > 1 && st->tm_mday <= DW + 1;
-    bool need_display_year = week == 0 || (st->tm_mon == 0 && need_display_mon);
+    bool need_display_mon = date.day > 1 && date.day <= DW + 1;
+    bool need_display_year = week == 0 || (date.month == 1 && need_display_mon);
 
     if (need_display_year) {
       // draw year at the beginning and for new year
       graphics_context_set_compositing_mode(ctx, GCompOpAssign);
-      calendar_layer_draw_year(ctx, st->tm_year, week);
+      calendar_layer_draw_year(ctx, date.year - 1900, week);
     } else if (include_today) {
       calendar_layer_draw_curr_week_indicator(ctx, week, true);
     }
@@ -281,7 +257,7 @@ static void calendar_layer_draw_dates(GContext* ctx) {
     if (need_display_mon) {
       // draw month infomation at the beginning of the month
       graphics_context_set_compositing_mode(ctx, GCompOpAssign);
-      calendar_layer_draw_mon(ctx, st->tm_mon, week);
+      calendar_layer_draw_mon(ctx, date.month - 1, week);
     } else if (include_today) {
       calendar_layer_draw_curr_week_indicator(ctx, week, false);
     }
