@@ -14,11 +14,13 @@ This is a repackaged version of the excellent **11 Weeks Watchface** originally 
 
 **🏪 [Install from Rebble App Store](https://apps.rebble.io/en_US/application/6903d9978e00390009cf73d9)**
 
-The easiest way to install and keep the watchface updated.
+The store listing may still contain the previous version. For the calendar fix in v2.9, use the direct download below.
 
 ### Option 2: Direct Download
 
-**📦 [Download 11weeks-watchface-v2.8.1.pbw](releases/11weeks-watchface-v2.8.1.pbw)** (Latest - v2.8.1)
+**📦 [Download 11weeks-watchface-v2.9.pbw](releases/11weeks-watchface-v2.9.pbw)** (Latest - v2.9)
+
+[SHA-256 checksum](releases/11weeks-watchface-v2.9.sha256) · Builds for aplite, basalt and diorite. Open the PBW on your phone with the Pebble app to update the existing watchface.
 
 Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks-config/releases)
 
@@ -28,6 +30,10 @@ Or download from [GitHub Releases](https://github.com/TensorChris/pebble-11weeks
 - ✅ All platforms: Pebble, Pebble Steel, Pebble Time series, Pebble 2
 
 ### Screenshots
+
+Calendar correction in v2.9: Friday, 11 September 2026, at 23:22. Actual aplite emulator capture with the existing date outline.
+
+![Correct Friday calendar](screenshots/calendar-friday-v2.9.png)
 
 ![Phone Battery View](screenshots/phone-battery.png)
 ![Pebble Charging](screenshots/pebble-charging.png)
@@ -62,7 +68,13 @@ The page offers the following customizable settings:
 
 ## 📜 Version History
 
-**v2.8.1** (Current - NEW FEATURE! 📅)
+**v2.9** (Current)
+- Fixes dates appearing in the previous weekday column late in the evening.
+- Uses local Gregorian calendar days independently of timezone normalization and daylight saving changes.
+- Preserves the existing pixel artwork, date outline, configuration and watchface identity.
+- Verified with frozen regression tests and real SDK emulator runs on aplite, basalt and diorite.
+
+**v2.8.1** (Previous)
 - **Week Number (CW) Display** - shows ISO 8601 calendar week number
 - Displays to the left of the current week arrow indicator
 - Configurable via settings toggle

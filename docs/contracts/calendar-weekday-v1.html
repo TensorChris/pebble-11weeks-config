@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korrekturvertrag: Wochentage im 11 Weeks Watchface</title>
+<style>
+  body{margin:0;background:#f5f5f3;color:#202020;font:16px/1.6 system-ui,sans-serif}
+  main{max-width:880px;margin:auto;padding:32px 24px}h1{font-size:30px;line-height:1.2}h2{font-size:20px;margin-top:32px}
+  li{margin:12px 0}code{font-size:14px}a{color:#245aa1}.status{color:#80551a}
+</style>
+<main>
+<p class="status">Vertragsentwurf v1 · 11. September 2026 · Freigabe ausstehend</p>
+<h1>Das richtige Datum unter dem richtigen Wochentag</h1>
+<p>Das 11 Weeks Watchface zeigt jeden Kalendertag in der richtigen Wochentagsspalte. Am Freitag, 11. September 2026, stehen die 11 und die aktuelle Wochentagsmarkierung unter FR. Maßgeblich ist das lokale Datum der Uhr.</p>
+<h2>Vorschau der Korrektur</h2>
+<p>Der Kalender verwendet weiterhin die vorhandenen Pixelgrafiken und das 11-Wochen-Raster. Die Vorschau zeigt den Kalenderbereich mit Wochenbeginn Montag und der Beispieluhrzeit 13:27; Zusatzanzeigen außerhalb des Kalenders sind hier ausgeblendet.</p>
+<div id="pebble-friday-preview">
+  <style>
+    #pebble-friday-preview { font-family: system-ui, sans-serif; color: light-dark(#202020,#ededed); }
+    #pebble-friday-preview figure { margin: 0; display: grid; justify-items: center; gap: 12px; }
+    #pebble-friday-preview canvas { width: 288px; height: 336px; max-width: 100%; image-rendering: pixelated; background: #000; }
+    #pebble-friday-preview figcaption { text-align: center; }
+  </style>
+  <figure>
+    <canvas width="144" height="168" role="img" aria-label="Soll-Vorschau: Kalender ab Montag, 31. August 2026. Freitag, 11. September, und die Spalte FR sind markiert. Kalenderwoche 37.">Freitag, 11. September 2026 · KW 37</canvas>
+    <figcaption>Soll-Vorschau · Freitag, 11. September 2026</figcaption>
+  </figure>
+  <script>
+    (() => {
+      const root = document.getElementById('pebble-friday-preview');
+      const c = root.querySelector('canvas').getContext('2d');
+      const assets = { numbers: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFCAYAAABSIVz6AAAD8GlDQ1BJQ0MgUHJvZmlsZQAAOI2NVd1v21QUP4lvXKQWP6Cxjg4Vi69VU1u5GxqtxgZJk6XpQhq5zdgqpMl1bhpT1za2021Vn/YCbwz4A4CyBx6QeEIaDMT2su0BtElTQRXVJKQ9dNpAaJP2gqpwrq9Tu13GuJGvfznndz7v0TVAx1ea45hJGWDe8l01n5GPn5iWO1YhCc9BJ/RAp6Z7TrpcLgIuxoVH1sNfIcHeNwfa6/9zdVappwMknkJsVz19HvFpgJSpO64PIN5G+fAp30Hc8TziHS4miFhheJbjLMMzHB8POFPqKGKWi6TXtSriJcT9MzH5bAzzHIK1I08t6hq6zHpRdu2aYdJYuk9Q/881bzZa8Xrx6fLmJo/iu4/VXnfH1BB/rmu5ScQvI77m+BkmfxXxvcZcJY14L0DymZp7pML5yTcW61PvIN6JuGr4halQvmjNlCa4bXJ5zj6qhpxrujeKPYMXEd+q00KR5yNAlWZzrF+Ie+uNsdC/MO4tTOZafhbroyXuR3Df08bLiHsQf+ja6gTPWVimZl7l/oUrjl8OcxDWLbNU5D6JRL2gxkDu16fGuC054OMhclsyXTOOFEL+kmMGs4i5kfNuQ62EnBuam8tzP+Q+tSqhz9SuqpZlvR1EfBiOJTSgYMMM7jpYsAEyqJCHDL4dcFFTAwNMlFDUUpQYiadhDmXteeWAw3HEmA2s15k1RmnP4RHuhBybdBOF7MfnICmSQ2SYjIBM3iRvkcMki9IRcnDTthyLz2Ld2fTzPjTQK+Mdg8y5nkZfFO+se9LQr3/09xZr+5GcaSufeAfAww60mAPx+q8u/bAr8rFCLrx7s+vqEkw8qb+p26n11Aruq6m1iJH6PbWGv1VIY25mkNE8PkaQhxfLIF7DZXx80HD/A3l2jLclYs061xNpWCfoB6WHJTjbH0mV35Q/lRXlC+W8cndbl9t2SfhU+Fb4UfhO+F74GWThknBZ+Em4InwjXIyd1ePnY/Psg3pb1TJNu15TMKWMtFt6ScpKL0ivSMXIn9QtDUlj0h7U7N48t3i8eC0GnMC91dX2sTivgloDTgUVeEGHLTizbf5Da9JLhkhh29QOs1luMcScmBXTIIt7xRFxSBxnuJWfuAd1I7jntkyd/pgKaIwVr3MgmDo2q8x6IdB5QH162mcX7ajtnHGN2bov71OU1+U0fqqoXLD0wX5ZM005UHmySz3qLtDqILDvIL+iH6jB9y2x83ok898GOPQX3lk3Itl0A+BrD6D7tUjWh3fis58BXDigN9yF8M5PJH4B8Gr79/F/XRm8m241mw/wvur4BGDj42bzn+Vmc+NL9L8GcMn8F1kAcXgSteGGAAAAZ0lEQVQoFaWPAQqAMAwDrfj/L6spHmRhQ8GBtE1unanzPttzqqo7k7CGKu6NGS5Mhl0aD7ovDd17Z7ibXPL48F2VWIYSAPxN82VPJ84UzFrgH3/MYjzn6b3O+EPAKuFKZ2n6OSfn/gXffik8PIH18wAAAABJRU5ErkJggg==', letters: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAFCAYAAADrNdqyAAAD8GlDQ1BJQ0MgUHJvZmlsZQAAOI2NVd1v21QUP4lvXKQWP6Cxjg4Vi69VU1u5GxqtxgZJk6XpQhq5zdgqpMl1bhpT1za2021Vn/YCbwz4A4CyBx6QeEIaDMT2su0BtElTQRXVJKQ9dNpAaJP2gqpwrq9Tu13GuJGvfznndz7v0TVAx1ea45hJGWDe8l01n5GPn5iWO1YhCc9BJ/RAp6Z7TrpcLgIuxoVH1sNfIcHeNwfa6/9zdVappwMknkJsVz19HvFpgJSpO64PIN5G+fAp30Hc8TziHS4miFhheJbjLMMzHB8POFPqKGKWi6TXtSriJcT9MzH5bAzzHIK1I08t6hq6zHpRdu2aYdJYuk9Q/881bzZa8Xrx6fLmJo/iu4/VXnfH1BB/rmu5ScQvI77m+BkmfxXxvcZcJY14L0DymZp7pML5yTcW61PvIN6JuGr4halQvmjNlCa4bXJ5zj6qhpxrujeKPYMXEd+q00KR5yNAlWZzrF+Ie+uNsdC/MO4tTOZafhbroyXuR3Df08bLiHsQf+ja6gTPWVimZl7l/oUrjl8OcxDWLbNU5D6JRL2gxkDu16fGuC054OMhclsyXTOOFEL+kmMGs4i5kfNuQ62EnBuam8tzP+Q+tSqhz9SuqpZlvR1EfBiOJTSgYMMM7jpYsAEyqJCHDL4dcFFTAwNMlFDUUpQYiadhDmXteeWAw3HEmA2s15k1RmnP4RHuhBybdBOF7MfnICmSQ2SYjIBM3iRvkcMki9IRcnDTthyLz2Ld2fTzPjTQK+Mdg8y5nkZfFO+se9LQr3/09xZr+5GcaSufeAfAww60mAPx+q8u/bAr8rFCLrx7s+vqEkw8qb+p26n11Aruq6m1iJH6PbWGv1VIY25mkNE8PkaQhxfLIF7DZXx80HD/A3l2jLclYs061xNpWCfoB6WHJTjbH0mV35Q/lRXlC+W8cndbl9t2SfhU+Fb4UfhO+F74GWThknBZ+Em4InwjXIyd1ePnY/Psg3pb1TJNu15TMKWMtFt6ScpKL0ivSMXIn9QtDUlj0h7U7N48t3i8eC0GnMC91dX2sTivgloDTgUVeEGHLTizbf5Da9JLhkhh29QOs1luMcScmBXTIIt7xRFxSBxnuJWfuAd1I7jntkyd/pgKaIwVr3MgmDo2q8x6IdB5QH162mcX7ajtnHGN2bov71OU1+U0fqqoXLD0wX5ZM005UHmySz3qLtDqILDvIL+iH6jB9y2x83ok898GOPQX3lk3Itl0A+BrD6D7tUjWh3fis58BXDigN9yF8M5PJH4B8Gr79/F/XRm8m241mw/wvur4BGDj42bzn+Vmc+NL9L8GcMn8F1kAcXgSteGGAAAA5UlEQVQ4EZWQQQ4DIQwDYdX/f7nFoFFHEUu7HEjs2Emgt9be47Tee5IB28wTwclzrFnM9661ivEn0tea5NQq7/1cix5MnE3Egx2tfZrT5/JSIWkEH2ye3DyeRPhpGheYCH+KfGw05OwDpt8vPjq0xNPsU829ripkkcobR8MDnEdj3p5dHu3uMTuu+pmz43ngnaZ6Ko6f3ZxHBz8/zgMQ1mbGLBbOedUY7/J/Zu184U5zec/T/vj4HDA7wAe/cnmAizbCJ5qPP8c9FrNutMQ7rev207dGNPBgIv1Sr8e15PQgVr0x3g9zp+sOG7/zNAAAAABJRU5ErkJggg==', big: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAAA8CAYAAAApDs6vAAAD8GlDQ1BJQ0MgUHJvZmlsZQAAOI2NVd1v21QUP4lvXKQWP6Cxjg4Vi69VU1u5GxqtxgZJk6XpQhq5zdgqpMl1bhpT1za2021Vn/YCbwz4A4CyBx6QeEIaDMT2su0BtElTQRXVJKQ9dNpAaJP2gqpwrq9Tu13GuJGvfznndz7v0TVAx1ea45hJGWDe8l01n5GPn5iWO1YhCc9BJ/RAp6Z7TrpcLgIuxoVH1sNfIcHeNwfa6/9zdVappwMknkJsVz19HvFpgJSpO64PIN5G+fAp30Hc8TziHS4miFhheJbjLMMzHB8POFPqKGKWi6TXtSriJcT9MzH5bAzzHIK1I08t6hq6zHpRdu2aYdJYuk9Q/881bzZa8Xrx6fLmJo/iu4/VXnfH1BB/rmu5ScQvI77m+BkmfxXxvcZcJY14L0DymZp7pML5yTcW61PvIN6JuGr4halQvmjNlCa4bXJ5zj6qhpxrujeKPYMXEd+q00KR5yNAlWZzrF+Ie+uNsdC/MO4tTOZafhbroyXuR3Df08bLiHsQf+ja6gTPWVimZl7l/oUrjl8OcxDWLbNU5D6JRL2gxkDu16fGuC054OMhclsyXTOOFEL+kmMGs4i5kfNuQ62EnBuam8tzP+Q+tSqhz9SuqpZlvR1EfBiOJTSgYMMM7jpYsAEyqJCHDL4dcFFTAwNMlFDUUpQYiadhDmXteeWAw3HEmA2s15k1RmnP4RHuhBybdBOF7MfnICmSQ2SYjIBM3iRvkcMki9IRcnDTthyLz2Ld2fTzPjTQK+Mdg8y5nkZfFO+se9LQr3/09xZr+5GcaSufeAfAww60mAPx+q8u/bAr8rFCLrx7s+vqEkw8qb+p26n11Aruq6m1iJH6PbWGv1VIY25mkNE8PkaQhxfLIF7DZXx80HD/A3l2jLclYs061xNpWCfoB6WHJTjbH0mV35Q/lRXlC+W8cndbl9t2SfhU+Fb4UfhO+F74GWThknBZ+Em4InwjXIyd1ePnY/Psg3pb1TJNu15TMKWMtFt6ScpKL0ivSMXIn9QtDUlj0h7U7N48t3i8eC0GnMC91dX2sTivgloDTgUVeEGHLTizbf5Da9JLhkhh29QOs1luMcScmBXTIIt7xRFxSBxnuJWfuAd1I7jntkyd/pgKaIwVr3MgmDo2q8x6IdB5QH162mcX7ajtnHGN2bov71OU1+U0fqqoXLD0wX5ZM005UHmySz3qLtDqILDvIL+iH6jB9y2x83ok898GOPQX3lk3Itl0A+BrD6D7tUjWh3fis58BXDigN9yF8M5PJH4B8Gr79/F/XRm8m241mw/wvur4BGDj42bzn+Vmc+NL9L8GcMn8F1kAcXgSteGGAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wYaCxMDa+u5yAAAAS9JREFUeNrt3EEOgzAMAMG64v9fNl9AVmQcMnOvCiGwysWRmfnbQES0/t8my8Li/eK5w3v+lgAAQQIAQQJAkABAkAAQJAAQJAAECQAECQBBAgBBAmAnV/WHZoWtXZeq6nqaDWi/TL7Obt37c5fvZ/d1OiEBMIIgASBIACBIAAgSAAgSAIIEAIIEgCABgCABIEgA8FRkcehQ94wjs9fgoA+T990JCQAECQBBAgBBAgBBAkCQAECQABAkABAkAAQJAAQJgOkuSzBD9+yubl+fYfj12Wvdsyu972fuTyckAEYQJAAECQAECQBBAgBBAkCQAECQABAkABAkAAQJAJ4qz7Izo2ot6+n5uT/75fTn54QEgCABgCABIEgAIEgACBIACBIAggQAggSAIAGAIAGwlRsaG1BjeJhjmAAAAABJRU5ErkJggg==', background: 'data:image/png;base64,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' };
+      Promise.all(Object.entries(assets).map(([key,src]) => new Promise(resolve => {
+        const im = new Image(); im.onload = () => resolve([key,im]); im.src = src;
+      }))).then(entries => {
+        const a = Object.fromEntries(entries);
+        c.imageSmoothingEnabled = false; c.fillStyle = '#000'; c.fillRect(0,0,144,168);
+        [[1,23,18],[3,79,18],[2,23,90],[7,79,90]].forEach(([n,x,y]) => c.drawImage(a.big,n*42,0,41,59,x,y,41,59));
+        c.globalCompositeOperation='lighten'; c.drawImage(a.background,0,0); c.globalCompositeOperation='source-over';
+        const letter = (s,x,y) => [...s].forEach((ch,i) => c.drawImage(a.letters,(ch.charCodeAt(0)-65)*3,0,3,5,x+i*4,y,3,5));
+        const num = (n,x,y) => c.drawImage(a.numbers,n*3,0,3,5,x,y,3,5);
+        c.fillStyle = '#000'; c.fillRect(23,10,98,7);
+        ['MO','TU','WE','TH','FR','SA','SU'].forEach((s,i) => letter(s,26+i*14,11));
+        let d = new Date(Date.UTC(2026,7,31));
+        for(let row=0;row<11;row++) {
+          for(let col=0;col<7;col++) {
+            const day=d.getUTCDate(), x=26+col*14,y=21+row*12;
+            const light=c.getImageData(24+col*14,19+row*12,1,1).data[0]>127;
+            const stamp=document.createElement('canvas'); stamp.width=7;stamp.height=5;
+            const t=stamp.getContext('2d'); t.fillStyle='#000';t.fillRect(0,0,7,5);
+            if(day>9)t.drawImage(a.numbers,Math.floor(day/10)*3,0,3,5,0,0,3,5);
+            t.drawImage(a.numbers,(day%10)*3,0,3,5,4,0,3,5);
+            if(light){const p=t.getImageData(0,0,7,5);for(let k=0;k<p.data.length;k+=4){p.data[k]=255-p.data[k];p.data[k+1]=255-p.data[k+1];p.data[k+2]=255-p.data[k+2];}t.putImageData(p,0,0);}
+            c.drawImage(stamp,x,y);
+            if(d.getUTCMonth()===8 && day===11) {
+              c.strokeStyle=light?'#000':'#fff';c.lineWidth=1;c.strokeRect(x-2.5,y-2.5,10,10);
+              c.strokeStyle='#fff';c.strokeRect(x-3.5,9.5,12,8);
+            }
+            d.setUTCDate(day+1);
+          }
+        }
+        num(2,10,18);num(0,15,18);num(2,10,24);num(6,15,24);
+        num(3,6,33);num(7,11,33);c.fillStyle='#fff';c.fillRect(18,33,1,5);c.fillRect(19,34,1,3);c.fillRect(20,35,1,1);
+        letter('SEP',124,21);letter('OCT',124,69);letter('NOV',124,117);
+      });
+    })();
+  </script>
+</div>
+
+<h2>Verbindliche Anforderungen nach Freigabe</h2>
+<ol>
+<li><strong>KAL-01 – Gemeldeter Fehler:</strong> Bei lokalem Datum 11.09.2026 liegen die 11 und beide Heute-Markierungen in der Freitagsspalte. Bei Wochenbeginn Montag zeigt die aktuelle Zeile 7, 8, 9, 10, 11, 12, 13 unter MO bis SU. Die angezeigte aktuelle Kalenderwoche ist bei aktivierter Anzeige 37.</li>
+<li><strong>KAL-02 – Vollständiger Kalender:</strong> Alle 77 Zellen zeigen lückenlos aufeinanderfolgende gregorianische Kalendertage in der passenden Spalte. Monatslängen, Schaltjahre, Monats- und Jahreswechsel werden berücksichtigt. Die erste Zeile beginnt mit dem gewählten Wochenbeginn an oder vor dem ersten Tag des Monats, in dem das lokale Datum sieben Kalendertage vor heute liegt. Monats- und Jahresbeschriftungen stimmen mit den dargestellten Daten überein.</li>
+<li><strong>KAL-03 – Wochenbeginn:</strong> Beide vorhandenen Einstellungen Montag und Sonntag funktionieren. Nach dem Umschalten und nach Neustart passen Überschriften, Datumszellen und Heute-Markierungen zur gespeicherten Einstellung.</li>
+<li><strong>KAL-04 – Lokale Zeit:</strong> Für dasselbe lokale Datum bleibt die Kalenderausrichtung zu jeder Uhrzeit gleich. Zeitzonen mit positiven und negativen UTC-Abständen und Sommerzeitwechsel verschieben keine Kalendertage. Beim lokalen Tageswechsel wird der neue Tag spätestens mit der nächsten regulären Minutenaktualisierung markiert; in den 77 Zellen gibt es genau eine Heute-Markierung.</li>
+<li><strong>KAL-05 – Bestehende Darstellung:</strong> Raster, Pixelziffern, Wochentagskürzel, integrierte Uhrzeit und vorhandene Anzeigeoptionen bleiben erhalten. Die Kalenderberechnung verändert den verwendeten aktuellen Zeitwert nicht. Auf aplite, basalt und diorite werden die korrigierten Kalenderdaten und Markierungen dargestellt.</li>
+<li><strong>KAL-06 – Lieferung:</strong> Eine installierbare PBW-Datei für die drei bereits unterstützten Plattformen und ein gemeinsamer PR gegen main enthalten die Korrektur. Automatisierte Prüfungen decken KAL-01 bis KAL-05 einschließlich der sichtbaren Darstellung ab. Vertrag und Tests erhalten die vereinbarten Freigabe-, Review- und Prüfsummengates. Installation auf der persönlichen Uhr und Merge erfolgen durch Christian, sofern nicht separat beauftragt.</li>
+</ol>
+<h2>Diagnosestand, nicht Teil der fachlichen Anforderungen</h2>
+<p>Das gemeldete Bild zeigt die 11 unter TH. Verdächtig ist die Normalisierung veränderter Kalendertage über mktime in src/calendar_layer.c einschließlich des manuellen Zurücksetzens von tm_gmtoff. Die konkrete Ursache ist noch nicht durch eine Reproduktion im Pebble-Laufzeitverhalten bestätigt. Die <a href="https://developer.rebble.io/docs/c/Standard_C/Time/">Pebble-Zeitdokumentation</a> beschreibt die beteiligten lokalen und UTC-Zeitfunktionen.</p>
+<p>Nach expliziter Freigabe wird genau dieses Artefakt in einem eigenen Commit eingefroren und seine SHA-256-Prüfsumme gespeichert. Anschließend folgen zunächst ausschließlich Tests und Test-Harness mit unabhängigem Codex-Review, danach die Implementierung.</p>
+</main>
+</html>

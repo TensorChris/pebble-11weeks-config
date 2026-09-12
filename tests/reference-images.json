@@ -1,0 +1,57 @@
+{
+  "resources/images/background.png": {
+    "width": 144,
+    "height": 168,
+    "rgba_sha256": "947dd055ae4ee6de3e02e1d0f9fe3153f2fde97fa0ed09b50092d66caa2e3444"
+  },
+  "resources/images/big_number_3x5.png": {
+    "width": 420,
+    "height": 60,
+    "rgba_sha256": "9e377b70d6579db8894050fc8765b41ff39425bf14aa406e41d43338813fe06a"
+  },
+  "resources/images/bluetooth_mark.png": {
+    "width": 7,
+    "height": 11,
+    "rgba_sha256": "76794c6943fff706bffd5c97b5a905610c1ff7e5e1c7a7c13b95d888cecc7f72"
+  },
+  "resources/images/cap_letters.png": {
+    "width": 78,
+    "height": 5,
+    "rgba_sha256": "81396b66ef3de5684c47a1499fea8745dd206b12f4716309659e0d05b56e904e"
+  },
+  "resources/images/number_3x5.png": {
+    "width": 30,
+    "height": 5,
+    "rgba_sha256": "22b7397bbae5d5973874d6ff919ef154cb935e3041be54aa5e73fe27da12ad4d"
+  },
+  "resources/images/phone_battery.png": {
+    "width": 7,
+    "height": 12,
+    "rgba_sha256": "3ab30ffdf5bb906f0ceefc27dd4d0197b32814d6eb1235e570a820129d9cb7de"
+  },
+  "resources/images/phone_battery_charging.png": {
+    "width": 7,
+    "height": 12,
+    "rgba_sha256": "cc5e4b4fc598dc7754fbdf8e66d25841d62dad5b20279fbe55da2a4e19164041"
+  },
+  "resources/images/quiet_time_icon.png": {
+    "width": 8,
+    "height": 10,
+    "rgba_sha256": "0b36383b3b5f653563343e50e26d5abe07dcfd72d17c67d31e8b84648dfd3f1a"
+  },
+  "resources/images/watch_battery.png": {
+    "width": 7,
+    "height": 12,
+    "rgba_sha256": "aa4ddfaf67a3cd53ff3fad7aeac1f3957baf8bace705a95e38f02963bef41c39"
+  },
+  "resources/images/watch_battery_charging.png": {
+    "width": 7,
+    "height": 12,
+    "rgba_sha256": "db52fc2855ab5e019c2e4948f81c83ff5a1a8b30e4f7b4e74eee973eebe20ee6"
+  },
+  "resources/images/yes_no.png": {
+    "width": 8,
+    "height": 4,
+    "rgba_sha256": "bd105e2f99b88bb0691100876176864f59a60acb4ab0375f0ead3745d8f1d463"
+  }
+}
